@@ -24,10 +24,13 @@
             android:name=".LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".ModifyActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".StartActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

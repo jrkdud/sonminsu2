@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context=".ModifyActivity">
+
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_alignParentTop="true"
+        android:background="#FFFFFF">
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:background="@android:color/transparent"
+            android:padding="0dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/set_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="마이페이지"
+            android:textSize="17dp"
+            android:gravity="center"/>
+
+        <ImageButton
+            android:id="@+id/settings_btn"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/setting"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:padding="0dp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="125dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:text="MODIFY"
+                android:textColor="#FF7A01"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/name"
+                android:ems="10"
+                android:hint="이름을 입력하세요"
+                android:inputType="textPersonName"
+                android:paddingLeft="7dp"
+                android:paddingTop="10dp"
+                android:text=""
+                android:textColorHint="#FFE4CC"
+                android:textSize="10dp" />
+
+            <EditText
+                android:id="@+id/et_id"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/login"
+                android:ems="10"
+                android:hint="아이디를 입력하세요"
+                android:inputType="textPersonName"
+                android:paddingLeft="7dp"
+                android:paddingTop="10dp"
+                android:text=""
+                android:textColorHint="#FFE4CC"
+                android:textSize="10dp" />
+
+            <RelativeLayout
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <EditText
+                    android:id="@+id/et_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/password"
+                    android:ems="10"
+                    android:hint="영문, 숫자, 특수문자 포함 8자 이상"
+                    android:inputType="textPassword"
+                    android:paddingLeft="7dp"
+                    android:paddingTop="10dp"
+                    android:textColorHint="#FFE4CC"
+                    android:textSize="10dp" />
+
+                <ImageButton
+                    android:id="@+id/eye"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignTop="@+id/et_pass"
+                    android:layout_alignEnd="@+id/et_pass"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/eyeoff" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <EditText
+                    android:id="@+id/et_pass2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/newpassword"
+                    android:ems="10"
+                    android:hint="●●●●●●●●"
+                    android:inputType="textPassword"
+                    android:paddingLeft="7dp"
+                    android:paddingTop="10dp"
+                    android:textColorHint="#FFE4CC"
+                    android:textSize="10dp" />
+
+                <ImageButton
+                    android:id="@+id/eye2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignTop="@+id/et_pass2"
+                    android:layout_alignEnd="@+id/et_pass2"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/eyeoff" />
+            </RelativeLayout>
+
+
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/phonenumber"
+                android:ems="10"
+                android:hint="010-0000-0000"
+                android:inputType="textPersonName"
+                android:paddingLeft="7dp"
+                android:paddingTop="10dp"
+                android:text=""
+                android:textColorHint="#FFE4CC"
+                android:textSize="10dp" />
+
+            <Button
+                android:id="@+id/btn_modify"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/loginbtn"
+                android:text="Modify"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</RelativeLayout>

@@ -13,21 +13,23 @@
         android:id="@+id/fragment_container" />
 
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bottom"
         android:layout_alignParentBottom="true">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/bottom_navigation"
-            app:itemIconTint="@color/colorMain"
-            app:labelVisibilityMode="unlabeled"
-            android:background="?android:attr/windowBackground"
-            app:menu="@menu/bottom_navigation" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:background="#FFFFFF"
+            app:menu="@menu/bottom_navigation"
+            app:itemIconSize="24dp"
+            app:itemIconTint="#FF7A00"
+            app:labelVisibilityMode="unlabeled"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </RelativeLayout>

@@ -5,10 +5,212 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Profile" />
+        android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentTop="true"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/my_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="마이페이지"
+                android:textSize="17dp"
+                android:gravity="center"/>
+
+            <ImageButton
+                android:id="@+id/settings_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/setting"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:padding="0dp" />
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+
+            <View
+                android:id="@+id/userphoto"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="14dp"
+                android:layout_centerVertical="true"
+                android:background="#FF7A00" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/userphoto"
+                android:layout_marginStart="21dp"
+                android:layout_centerVertical="true"
+                android:text="username"
+                android:textSize="15sp"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/pf_edit_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#FFFFFF">
+
+            <View
+                android:id="@+id/user_ic"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="24dp"
+                android:background="@drawable/user_icon" />
+
+            <TextView
+                android:id="@+id/profile_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/user_ic"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
+                android:text="내 정보 수정"
+                android:textSize="13dp"
+                android:gravity="center_vertical" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/list_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="1dp"
+            android:background="#FFFFFF">
+
+            <View
+                android:id="@+id/lists_ic"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="24dp"
+                android:background="@drawable/list_icon" />
+
+            <TextView
+                android:id="@+id/list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/lists_ic"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
+                android:text="게시물관리"
+                android:textSize="13dp"
+                android:gravity="center_vertical" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/bookmarks_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="1dp"
+            android:background="#FFFFFF">
+
+            <View
+                android:id="@+id/bookmarks_ic"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="24dp"
+                android:background="@drawable/bookmark_icon" />
+
+            <TextView
+                android:id="@+id/bookmarks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/bookmarks_ic"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
+                android:text="북마크"
+                android:textSize="12dp"
+                android:gravity="center_vertical" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/logout_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="1dp"
+            android:background="#FFFFFF">
+
+            <View
+                android:id="@+id/logout_ic"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="26dp"
+                android:background="@drawable/logout_icon" />
+
+            <TextView
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/logout_ic"
+                android:layout_marginStart="12dp"
+                android:layout_centerVertical="true"
+                android:text="로그아웃"
+                android:textSize="13dp"
+                android:gravity="center_vertical" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/userremove_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="1dp"
+            android:background="#FFFFFF">
+
+            <View
+                android:id="@+id/userremove_ic"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="24.5dp"
+                android:background="@drawable/userremove_icon" />
+
+            <TextView
+                android:id="@+id/userremove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/userremove_ic"
+                android:layout_marginStart="15.5dp"
+                android:layout_centerVertical="true"
+                android:text="회원탈퇴"
+                android:textSize="13dp"
+                android:gravity="center_vertical" />
+
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
 
 </FrameLayout>

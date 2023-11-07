@@ -40,19 +40,19 @@ public class MainActivity extends AppCompatActivity {
         navigationBarView.setOnItemSelectedListener(item -> {
 
             int itemId = item.getItemId();
-            if (itemId == R.id.nav_home) {
+            if (itemId == R.id.navigation_home) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
                 return true;
-            } else if (itemId == R.id.nav_search) {
+            } else if (itemId == R.id.navigation_search) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, searchFragment).commit();
                 return true;
-            } else if (itemId == R.id.nav_add) {
+            } else if (itemId == R.id.navigation_upload) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, postFragment).commit();
                 return true;
-            } else if (itemId == R.id.nav_notification) {
+            } else if (itemId == R.id.navigation_alarm) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notificationFragment).commit();
                 return true;
-            } else if (itemId == R.id.nav_profile) {
+            } else if (itemId == R.id.navigation_profile) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, profileFragment).commit();
                 return true;
             }
