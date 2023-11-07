@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "242597029871",
+    "firebase_url": "https://smsfirebase-cbc65-default-rtdb.firebaseio.com",
+    "project_id": "smsfirebase-cbc65",
+    "storage_bucket": "smsfirebase-cbc65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242597029871:android:7fcc8c4fd38235eee4b81a",
+        "android_client_info": {
+          "package_name": "com.example.sms_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr5YR0ijeqAR8G5AoOIiEofJuyxum2wfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242597029871:android:1d8bdb4fe7302b13e4b81a",
+        "android_client_info": {
+          "package_name": "com.example.sonminsu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr5YR0ijeqAR8G5AoOIiEofJuyxum2wfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
