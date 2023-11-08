@@ -1,24 +1,20 @@
 package com.example.sonminsu;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.sonminsu.Fragment.HomeFragment;
 import com.example.sonminsu.Fragment.NotificationFragment;
-import com.example.sonminsu.Fragment.PostFragment;
 import com.example.sonminsu.Fragment.ProfileFragment;
 import com.example.sonminsu.Fragment.SearchFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
     HomeFragment homeFragment;
     SearchFragment searchFragment;
-    PostFragment postFragment;
     NotificationFragment notificationFragment;
     ProfileFragment profileFragment;
 
@@ -30,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         searchFragment = new SearchFragment();
-        postFragment = new PostFragment();
         notificationFragment = new NotificationFragment();
         profileFragment = new ProfileFragment();
 
@@ -47,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, searchFragment).commit();
                 return true;
             } else if (itemId == R.id.navigation_upload) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, postFragment).commit();
+                Intent intent = new Intent(MainActivity.this, PostActivity.class);
+                startActivity(intent);
                 return true;
             } else if (itemId == R.id.navigation_alarm) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notificationFragment).commit();
