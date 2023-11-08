@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,9 +26,10 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText username, fullname, email, password;
-    Button register;
-
+    EditText et_name, et_id, et_pass, et_email;
+    Button btn_register;
+    ImageButton eye, back;
+    private boolean isEyeOff = true;
     FirebaseAuth auth;
     DatabaseReference reference;
     ProgressDialog pd;
@@ -36,31 +39,62 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        username = findViewById(R.id.username);
-        fullname = findViewById(R.id.fullname);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
-        register = findViewById(R.id.register);
+        et_id = findViewById(R.id.et_id);
+        et_pass = findViewById(R.id.et_pass);
+        et_name = findViewById(R.id.et_name);
+        et_email = findViewById(R.id.et_email);
+        eye = findViewById(R.id.eye);
+        back = findViewById(R.id.back);
+        btn_register = findViewById(R.id.btn_register);
 
         auth = FirebaseAuth.getInstance();
 
-        register.setOnClickListener(new View.OnClickListener() {
+        btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String str_username = username.getText().toString();
-                String str_fullname = fullname.getText().toString();
-                String str_email = email.getText().toString();
-                String str_password = password.getText().toString();
+                String str_username = et_name.getText().toString();
+                String str_id = et_id.getText().toString();
+                String str_email = et_email.getText().toString();
+                String str_password = et_pass.getText().toString();
 
-                if(TextUtils.isEmpty(str_username) || TextUtils.isEmpty(str_fullname) || TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)) {
+                if(TextUtils.isEmpty(str_username) || TextUtils.isEmpty(str_id) || TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)) {
                     Toast.makeText(RegisterActivity.this, "모든 입력란을 채워주세요", Toast.LENGTH_SHORT).show();
                 } else if (str_password.length() < 6) {
                     Toast.makeText(RegisterActivity.this, "비밀번호는 6자이상 입력해주세요.", Toast.LENGTH_SHORT).show();
                 } else {
-                    register(str_username, str_fullname, str_email, str_password);
+                    register(str_username, str_id, str_email, str_password);
                 }
             }
         });
+
+        //로그인 화면으로 돌아가기
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish(); // 현재 액티비티를 종료합니다. 이 코드가 없으면 이전 액티비티(로그인 화면)로 돌아갔다가 뒤로 가기 버튼을 누르면 현재 액티비티로 다시 돌아오게 됩니다.
+            }
+        });
+
+        // 보이기 숨기기 이미지버튼
+        eye.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEyeOff) {
+                    // 비밀번호 보이기
+                    eye.setImageResource(R.drawable.eye);
+                    et_pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else {
+                    // 비밀번호 숨기기
+                    eye.setImageResource(R.drawable.eyeoff);
+                    et_pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+                isEyeOff = !isEyeOff;
+                et_pass.setSelection(et_pass.getText().length()); // 커서를 마지막으로 이동
+            }
+        });
+
     }
     private void register(String username, String fullname, String email, String password){
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
@@ -84,13 +118,13 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
                                 pd.dismiss();
-                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                Toast.makeText(RegisterActivity.this, "회원가입에 성공하였습니다. 로그인 창으로 돌아갑니다.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             }
                         }
                     });
-
                 } else {
                     pd.dismiss();
                     Toast.makeText(RegisterActivity.this, "입력하신 이메일과 비밀번호는 가입할 수 없습니다.", Toast.LENGTH_SHORT).show();
