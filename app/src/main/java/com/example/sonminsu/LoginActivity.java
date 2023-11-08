@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isChecked = false;
     ImageButton eye;
     private boolean isEyeOff = true;
-    TextView txt_signup;
     FirebaseAuth auth;
     ProgressDialog pd;
 
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 
