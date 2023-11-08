@@ -130,10 +130,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                 .child(postid);
 
         reference.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                likes.setText(snapshot.getChildrenCount() + " likes");
+                likes.setText(String.valueOf(snapshot.getChildrenCount()));
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
