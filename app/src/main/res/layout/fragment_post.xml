@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_alignParentTop="true"
         android:background="#FFFFFF">
 
@@ -26,7 +26,7 @@
             android:src="@drawable/sms" />
 
         <TextView
-            android:id="@+id/set_txt"
+            android:id="@+id/upload_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
