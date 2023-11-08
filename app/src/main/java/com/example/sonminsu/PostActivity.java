@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -24,8 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
-import com.theartofdev.edmodo.cropper.CropImage;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
@@ -33,7 +31,6 @@ public class PostActivity extends AppCompatActivity {
 
     Uri imageUri;
     String myUrl = "";
-    StorageTask uploadTask;
     StorageReference storageReference;
 
     ImageView close, image_added;
@@ -61,91 +58,106 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
+        // 이미지뷰 클릭 시 이미지 선택 작업 시작
+        image_added.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openImagePicker();
+            }
+        });
+
         post.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 uploadImage();
             }
         });
-        CropImage.activity().setAspectRatio(1, 1).start(PostActivity.this);
     }
 
-    private String getFileExtension (Uri uri){
+    private String getFileExtension(Uri uri){
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
+    // 이미지 선택을 위한 메서드
+    private void openImagePicker() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1); // 이 숫자는 요청 코드로 나중에 onActivityResult에서 사용
+    }
+
+    // 이미지 선택 후 결과 처리
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            image_added.setImageURI(imageUri);
+        }
+    }
+
     private void uploadImage() {
-//        ProgressDialog progressDialog = new ProgressDialog(this);
-//        progressDialog.setMessage("Posting");
-//        progressDialog.show();
+        pd = new ProgressDialog(this);
+        pd.setMessage("Posting");
+        pd.show();
 
         if(imageUri != null){
-            StorageReference filereference = storageReference.child(System.currentTimeMillis()
-            + "."+ getFileExtension(imageUri));
+            final StorageReference filereference = storageReference.child(System.currentTimeMillis()
+                    + "."+ getFileExtension(imageUri));
 
-            uploadTask = filereference.putFile(imageUri);
-            uploadTask.continueWithTask(new Continuation() {
-                @Override
-                        public Object then(@NonNull Task task) throws Exception {
-                    if(!uploadTask.isSuccessful()){
-                        throw task.getException();
-                    }
+            UploadTask uploadTask = filereference.putFile(imageUri);
 
-                    return filereference.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<Uri> task) {
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     if(task.isSuccessful()){
-                        Uri downloadUri = task.getResult();
-                        myUrl = downloadUri.toString();
+                        filereference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if(task.isSuccessful()){
+                                    Uri downloadUri = task.getResult();
+                                    myUrl = downloadUri.toString();
 
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+                                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
 
-                        String postid = reference.push().getKey();
+                                    String postid = reference.push().getKey();
 
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("postid", postid);
-                        hashMap.put("postimage", myUrl);
-                        hashMap.put("description", description.getText().toString());
-                        hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                    hashMap.put("postid", postid);
+                                    hashMap.put("postimage", myUrl);
+                                    hashMap.put("description", description.getText().toString());
+                                    hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                        reference.child(postid).setValue(hashMap);
+                                    reference.child(postid).setValue(hashMap);
 
-                        pd.dismiss();
+                                    pd.dismiss();
 
-                        startActivity(new Intent(PostActivity.this, MainActivity.class));
-                        finish();
+                                    startActivity(new Intent(PostActivity.this, MainActivity.class));
+                                    finish();
+                                } else {
+                                    pd.dismiss();
+                                    Toast.makeText(PostActivity.this, "실패했습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
                     } else {
-                        Toast.makeText(PostActivity.this, "실패했습니다.", Toast.LENGTH_SHORT).show();
+                        pd.dismiss();
+                        Toast.makeText(PostActivity.this, "업로드 실패했습니다.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    pd.dismiss();
                     Toast.makeText(PostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
+            pd.dismiss();
             Toast.makeText(this, "이미지가 선택되지 않았습니다!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            imageUri = result.getUri();
-
-            image_added.setImageURI(imageUri);
-        } else {
-            Toast.makeText(this, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(PostActivity.this, MainActivity.class));
-            finish();
         }
     }
 }

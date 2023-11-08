@@ -48,7 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clickable="true">
 
         <ImageView
             android:layout_width="match_parent"
@@ -67,7 +68,7 @@
             android:id="@+id/description"/>
 
     </LinearLayout>
-        
+
 
 
 </LinearLayout>
