@@ -51,13 +51,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="125dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="40dp"
-            android:layout_marginTop="125dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="30dp"
             android:orientation="vertical">
@@ -149,7 +149,7 @@
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/newpassword"
                     android:ems="10"
-                    android:hint="●●●●●●●●"
+                    android:hint="변경할 비밀번호를 입력해주세요ㅂㅈ"
                     android:inputType="textPassword"
                     android:paddingLeft="7dp"
                     android:paddingTop="10dp"
@@ -171,14 +171,14 @@
 
 
             <EditText
-                android:id="@+id/et_phone"
+                android:id="@+id/et_email"
                 android:layout_width="280dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
-                android:background="@drawable/phonenumber"
+                android:background="@drawable/emailaddress"
                 android:ems="10"
-                android:hint="010-0000-0000"
+                android:hint="이메일을 입력하세요"
                 android:inputType="textPersonName"
                 android:paddingLeft="7dp"
                 android:paddingTop="10dp"

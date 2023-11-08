@@ -1,5 +1,7 @@
 package com.example.sonminsu;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 public class ModifyActivity extends AppCompatActivity {
-    private EditText et_id, et_pass, et_pass2, et_name, et_phone;
+    private EditText et_id, et_pass, et_pass2, et_name, et_email;
     private Button btn_modify;
     private ImageButton eye, eye2, back;
     private boolean isEyeOff = true;
@@ -33,10 +35,21 @@ public class ModifyActivity extends AppCompatActivity {
         et_pass = findViewById(R.id.et_pass);
         et_pass2 = findViewById(R.id.et_pass2);
         et_name = findViewById(R.id.et_name);
-        et_phone = findViewById(R.id.et_phone);
+        et_email = findViewById(R.id.et_email);
         back = findViewById(R.id.back_btn);
         eye = findViewById(R.id.eye);
         eye2 = findViewById(R.id.eye2);
+
+
+        //환경설정 버튼
+        ImageButton settingsButton = findViewById(R.id.settings_btn);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ModifyActivity.this, SettingActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         //back 버튼 이전 화면으로 돌아가기
@@ -90,9 +103,10 @@ public class ModifyActivity extends AppCompatActivity {
                 String userid = et_id.getText().toString();
                 String passwd = et_pass.getText().toString();
                 String name = et_name.getText().toString();
-                int phone = Integer.parseInt(et_phone.getText().toString());
+                int email = Integer.parseInt(et_email.getText().toString());
 
             }
         });
+
     }
 }
