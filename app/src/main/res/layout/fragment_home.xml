@@ -12,18 +12,23 @@
         android:background="?android:attr/windowBackground">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
             android:background="?android:attr/windowBackground">
 
-
-            <ImageView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_alignParentStart="true"
-                android:src="@drawable/sms" />
+                android:layout_height="wrap_content">
 
+                <ImageView
+                    android:layout_width="180dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="-20dp"
+                    android:src="@drawable/sms"/>
+
+            </RelativeLayout>
 
         </androidx.appcompat.widget.Toolbar>
 
