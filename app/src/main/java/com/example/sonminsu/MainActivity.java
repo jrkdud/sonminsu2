@@ -3,6 +3,7 @@ package com.example.sonminsu;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.sonminsu.Fragment.HomeFragment;
@@ -32,28 +33,44 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
 
         NavigationBarView navigationBarView = findViewById(R.id.bottom_navigation);
-        navigationBarView.setOnItemSelectedListener(item -> {
 
-            int itemId = item.getItemId();
-            if (itemId == R.id.navigation_home) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
-                return true;
-            } else if (itemId == R.id.navigation_search) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, searchFragment).commit();
-                return true;
-            } else if (itemId == R.id.navigation_upload) {
-                Intent intent = new Intent(MainActivity.this, PostActivity.class);
-                startActivity(intent);
-                return true;
-            } else if (itemId == R.id.navigation_alarm) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notificationFragment).commit();
-                return true;
-            } else if (itemId == R.id.navigation_profile) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, profileFragment).commit();
-                return true;
-            }
+        Bundle intent1 = getIntent().getExtras();
+        if(intent1 != null) {
+            String publisher = intent1.getString("publisherid");
 
-            return false;
-        });
+            SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+            editor.putString("profileid", publisher);
+            editor.apply();
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new HomeFragment()).commit();
+        } else {
+            navigationBarView.setOnItemSelectedListener(item -> {
+
+                int itemId = item.getItemId();
+                if (itemId == R.id.navigation_home) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+                    return true;
+                } else if (itemId == R.id.navigation_search) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, searchFragment).commit();
+                    return true;
+                } else if (itemId == R.id.navigation_upload) {
+                    Intent intent = new Intent(MainActivity.this, PostActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (itemId == R.id.navigation_alarm) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notificationFragment).commit();
+                    return true;
+                } else if (itemId == R.id.navigation_profile) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, profileFragment).commit();
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
+
+
     }
 }
