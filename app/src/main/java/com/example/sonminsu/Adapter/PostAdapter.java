@@ -62,8 +62,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         nrLikes(viewHolder.likes, post.getPostid());
 
-        getComments(post.getPostid(), viewHolder.comments);
+        getCommentsWithText(post.getPostid(), viewHolder.comments);
 
+        getCommentsCount(post.getPostid(), viewHolder.comments_count);
 
         viewHolder.like.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -100,6 +101,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         });
     }
 
+    private void getComments(String postid, TextView comments) {
+    }
+
     @Override
     public int getItemCount() {
         return mPost.size();
@@ -107,7 +111,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public ImageView image_profile, post_image, like, comment, save;
-        public TextView username, likes, publisher, description, comments;
+        public TextView username, likes, publisher, description, comments, comments_count;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -122,10 +126,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             publisher = itemView.findViewById(R.id.publisher);
             description = itemView.findViewById(R.id.description);
             comments = itemView.findViewById(R.id.comments);
+            comments_count = itemView.findViewById(R.id.comments_count);
         }
     }
 
-    private void getComments(String postid, TextView comments) {
+    // "View ALL [댓글 개수] Comments" 형태로 댓글 개수를 표시
+    private void getCommentsWithText(String postid, TextView comments) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Comments").child(postid);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -140,6 +146,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             }
         });
     }
+
+    // 댓글 개수를 숫자만 표시
+    private void getCommentsCount(String postid, TextView comments_count) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Comments").child(postid);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                comments_count.setText(String.valueOf(snapshot.getChildrenCount()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
 
     private void isLiked(String postid, ImageView imageView) {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
