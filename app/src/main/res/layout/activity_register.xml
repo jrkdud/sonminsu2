@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="40dp"
-                android:layout_marginTop="140dp"
+                android:layout_marginTop="120dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginBottom="30dp"
                 android:orientation="vertical">
@@ -50,33 +50,33 @@
                 <EditText
                     android:id="@+id/et_name"
                     android:layout_width="280dp"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/name"
                     android:ems="10"
                     android:hint="이름을 입력하세요"
                     android:inputType="textPersonName"
-                    android:paddingLeft="7dp"
+                    android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:textColorHint="#FFE4CC"
-                    android:textSize="10dp" />
+                    android:textSize="15dp" />
 
                 <EditText
                     android:id="@+id/et_id"
                     android:layout_width="280dp"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/login"
                     android:ems="10"
                     android:hint="아이디를 입력하세요"
                     android:inputType="textPersonName"
-                    android:paddingLeft="7dp"
+                    android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:text=""
                     android:textColorHint="#FFE4CC"
-                    android:textSize="10dp" />
+                    android:textSize="15dp" />
 
                 <RelativeLayout
                     android:layout_width="280dp"
@@ -86,16 +86,16 @@
                     <EditText
                         android:id="@+id/et_pass"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="50dp"
                         android:layout_marginBottom="15dp"
                         android:background="@drawable/password"
                         android:ems="10"
                         android:hint="영문, 숫자, 특수문자 포함 6자 이상"
                         android:inputType="textPassword"
-                        android:paddingLeft="7dp"
+                        android:paddingLeft="10dp"
                         android:paddingTop="10dp"
                         android:textColorHint="#FFE4CC"
-                        android:textSize="10dp" />
+                        android:textSize="15dp" />
 
                     <ImageButton
                         android:id="@+id/eye"
@@ -103,8 +103,8 @@
                         android:layout_height="30dp"
                         android:layout_alignTop="@+id/et_pass"
                         android:layout_alignEnd="@+id/et_pass"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
                         android:background="?android:attr/selectableItemBackground"
                         android:scaleType="fitCenter"
                         android:src="@drawable/eyeoff" />
@@ -113,18 +113,18 @@
                 <EditText
                     android:id="@+id/et_email"
                     android:layout_width="280dp"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/emailaddress"
                     android:ems="10"
                     android:hint="이메일을 입력하세요"
                     android:inputType="textPersonName"
-                    android:paddingLeft="7dp"
+                    android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:text=""
                     android:textColorHint="#FFE4CC"
-                    android:textSize="10dp" />
+                    android:textSize="15dp" />
 
                 <Button
                     android:id="@+id/btn_register"

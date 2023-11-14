@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -40,8 +41,14 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -54,6 +61,10 @@ public class PostActivity extends AppCompatActivity {
     EditText description;
     ProgressDialog pd;
 
+    private ExecutorService executorService;
+
+    private static final int YOUR_REQUEST_CODE = 123;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +76,8 @@ public class PostActivity extends AppCompatActivity {
         description = findViewById(R.id.description);
 
         storageReference = FirebaseStorage.getInstance().getReference("posts");
+
+        executorService = Executors.newSingleThreadExecutor();
 
         // 이미지뷰 클릭 시 카메라 열기
         image_added.setOnClickListener(new View.OnClickListener() {
@@ -89,67 +102,67 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        // 갤러리 읽기 권한 요청
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        // 저장소 권한 확인 및 요청
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
         } else {
-            new LoadGalleryTask().execute();
-        }
-
-    }
-
-    private class LoadGalleryTask extends AsyncTask<Void, Void, List<Uri>> {
-        @Override
-        protected List<Uri> doInBackground(Void... voids) {
-            return getImagesUri(PostActivity.this);
-        }
-
-        @Override
-        protected void onPostExecute(List<Uri> uris) {
-            RecyclerView recyclerView = findViewById(R.id.recycler_gallery);
-            recyclerView.setLayoutManager(new LinearLayoutManager(PostActivity.this, LinearLayoutManager.HORIZONTAL, false));
-            recyclerView.setAdapter(new ImageAdapter(new ArrayList<>(uris)));
+            loadImage();
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
+        if (requestCode == 0) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 권한이 허용된 경우, 다시 이미지 로딩을 시도합니다.
-                new LoadGalleryTask().execute();
+                loadImage();
             } else {
-                // 권한이 거부된 경우, 필요한 액션을 수행합니다.
-                Toast.makeText(this, "갤러리 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    // 사용자가 '다시 묻지 않음'을 선택하지 않고 거부한 경우, 권한을 다시 요청합니다.
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                } else {
+                    // '다시 묻지 않음'을 선택하고 거부한 경우, 토스트 메시지를 띄웁니다.
+                    Toast.makeText(this, "권한이 거부되었습니다. 앱 설정에서 권한을 허용해주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
 
-    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
-    //갤러리 이미지 미리보기 -- 수정중
-    public List<Uri> getImagesUri(Context context) {
-        Uri uri;
-        List<Uri> listOfAllImages = new ArrayList<>();
-        Cursor cursor;
-        int column_index_data;
-        String PathOfImage = null;
-        uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+    private void loadImage() {
+        // Uri를 저장할 ArrayList를 생성합니다.
+        ArrayList<Uri> imageUris = new ArrayList<>();
+        Cursor cursor = null;
 
-        String[] projection = {MediaStore.MediaColumns._ID};
+        try {
+            // MediaStore를 통해 모든 이미지를 가져옵니다.
+            cursor = getContentResolver().query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    new String[]{MediaStore.Images.Media._ID},
+                    null,
+                    null,
+                    MediaStore.Images.Media.DATE_ADDED + " DESC"
+            );
 
-        cursor = context.getContentResolver().query(uri, projection, null, null, null);
+            // 이미지를 모두 선택합니다.
+            while (cursor != null && cursor.moveToNext()) {
+                int id = cursor.getInt(0);
+                Uri contentUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
 
-        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID);
-        while (cursor.moveToNext()) {
-            Uri imageUri = ContentUris.withAppendedId(uri, cursor.getLong(column_index_data));
-            listOfAllImages.add(imageUri);
+                // ArrayList에 Uri를 추가합니다.
+                imageUris.add(contentUri);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        return listOfAllImages;
+
+        // RecyclerView에 어댑터를 설정합니다.
+        RecyclerView recyclerView = findViewById(R.id.recycler_gallery);
+        ImageAdapter adapter = new ImageAdapter(this, imageUris);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
