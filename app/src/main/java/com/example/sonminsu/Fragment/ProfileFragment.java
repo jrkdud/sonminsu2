@@ -13,8 +13,15 @@ import androidx.fragment.app.Fragment;
 import com.example.sonminsu.ModifyActivity;
 import com.example.sonminsu.R;
 import com.example.sonminsu.SettingActivity;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.HashMap;
 
 public class ProfileFragment extends Fragment {
+
+    FirebaseUser firebaseUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,4 +49,17 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+
+    private void addNotifications() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(profileid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userid", firebaseUser.getUid());
+        hashMap.put("text", "started following you");
+        hashMap.put("postid", "");
+        hashMap.put("ispost", false);
+
+        reference.push().setValue(hashMap);
+    }
+
 }
