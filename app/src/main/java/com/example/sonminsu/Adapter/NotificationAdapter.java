@@ -50,7 +50,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notification notification = mNotification.get(position);
         holder.text.setText(notification.getText());
-        getUserInfo(holder.post_image, holder.username, notification.getUserid());
+        getUserInfo(holder.image_profile, holder.username, notification.getUserid());
 
         if(notification.isIspost()) {
             holder.post_image.setVisibility(View.VISIBLE);
@@ -103,7 +103,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
     }
 
-    private void getUserInfo(final ImageView imageView, final TextView username, String publisherid) {
+    private void getUserInfo(ImageView imageView, TextView username, String publisherid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(publisherid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
