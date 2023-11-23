@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.sonminsu.FollowersActivity;
 import com.example.sonminsu.ModifyActivity;
 import com.example.sonminsu.R;
 import com.example.sonminsu.SettingActivity;
@@ -44,6 +45,16 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        followers.setOnClickLinstner(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), FollowersActivity.class);
+                intent.putExtra("id", profileid);
+                intent.putExtra("title", "following");
                 startActivity(intent);
             }
         });
