@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sonminsu.ModifyActivity;
 import com.example.sonminsu.R;
@@ -19,17 +21,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
-        RelativeLayout layout = view.findViewById(R.id.pf_edit_wrap);
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ModifyActivity.class);
-                startActivity(intent);
-            }
-        });
 
         ImageButton settingsButton = view.findViewById(R.id.settings_btn);
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +32,27 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        RelativeLayout layout = view.findViewById(R.id.pf_edit_wrap);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ModifyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        RelativeLayout layout2 = view.findViewById(R.id.list_wrap);
+        layout2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new PostManageFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
         return view;
     }
 }
