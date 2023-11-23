@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.sonminsu.Fragment.PostDetailFragment;
 import com.example.sonminsu.Fragment.ProfileFragment;
 import com.example.sonminsu.Model.Post;
 import com.example.sonminsu.Model.User;

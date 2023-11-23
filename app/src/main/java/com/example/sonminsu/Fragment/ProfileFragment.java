@@ -22,6 +22,7 @@ import java.util.HashMap;
 public class ProfileFragment extends Fragment {
 
     FirebaseUser firebaseUser;
+    String profileid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
