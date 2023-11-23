@@ -102,7 +102,7 @@ public class CommentsActivity extends AppCompatActivity {
         readComments();
     }
 
-    private void addComment()
+    private void addComment() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments").child(postid);
 
         HashMap<String, Object> hashMap = new HashMap<>();
