@@ -12,11 +12,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.sonminsu.FollowersActivity;
 import com.example.sonminsu.ModifyActivity;
 import com.example.sonminsu.R;
 import com.example.sonminsu.SettingActivity;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.HashMap;
 
 public class ProfileFragment extends Fragment {
+
+    FirebaseUser firebaseUser;
+    String profileid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,15 +41,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
         RelativeLayout layout = view.findViewById(R.id.pf_edit_wrap);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ModifyActivity.class);
-                startActivity(intent);
             }
         });
-
 
         RelativeLayout layout2 = view.findViewById(R.id.list_wrap);
         layout2.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +60,23 @@ public class ProfileFragment extends Fragment {
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
+
         });
+
+
+
+
+//        private void addNotifications() {
+//            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(profileid);
+//
+//            HashMap<String, Object> hashMap = new HashMap<>();
+//            hashMap.put("userid", firebaseUser.getUid());
+//            hashMap.put("text", "started following you");
+//            hashMap.put("postid", "");
+//            hashMap.put("ispost", false);
+//
+//            reference.push().setValue(hashMap);
+//        }
         return view;
     }
 }

@@ -193,7 +193,7 @@
                 android:background="#00000000"
                 android:text="Sing up"
                 android:textColor="#FF7A01"
-                android:textSize="15dp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
         </LinearLayout>
 
