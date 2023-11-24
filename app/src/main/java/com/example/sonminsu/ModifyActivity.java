@@ -93,17 +93,7 @@ public class ModifyActivity extends AppCompatActivity {
 
         // 회원수정 버튼 클릭 시 수행
         btn_modify = findViewById(R.id.btn_modify);
-        btn_modify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // EditText에 현재 입력되어있는 값을 get(가져온다)해온다.
-                String userid = et_id.getText().toString();
-                String passwd = et_pass.getText().toString();
-                String name = et_name.getText().toString();
-                int email = Integer.parseInt(et_email.getText().toString());
 
-            }
-        });
 
     }
 }

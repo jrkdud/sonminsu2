@@ -15,11 +15,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 //import com.example.sonminsu.FollowersActivity;
 import com.example.sonminsu.EditProfileActivity;
+import com.example.sonminsu.LoginActivity;
 import com.example.sonminsu.ModifyActivity;
 import com.example.sonminsu.R;
 import com.example.sonminsu.RegisterActivity;
 import com.example.sonminsu.SettingActivity;
 import com.example.sonminsu.StartActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,7 +35,9 @@ public class ProfileFragment extends Fragment {
     FirebaseUser firebaseUser;
     String profileid;
 
-    private TextView profile_edit;
+    private TextView profile_edit, logout;
+
+
 
 
 
@@ -98,6 +102,21 @@ public class ProfileFragment extends Fragment {
                 addNotifications();
             }
         });
+
+        logout = view.findViewById(R.id.logout);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // EditProfileActivity로 전환하기 위해 Intent 생성
+                Intent intent = new Intent(getActivity(), LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                // startActivity를 사용하여 새로운 Activity로 전환
+                startActivity(intent);
+            }
+        });
+
+
 
         return view;
     }
