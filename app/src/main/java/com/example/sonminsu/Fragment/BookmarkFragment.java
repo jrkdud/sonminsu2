@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,33 +34,40 @@ import com.google.firebase.database.ValueEventListener;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class PostManageFragment extends Fragment {
+
+public class BookmarkFragment extends Fragment {
 
     ImageView image_profile, options;
     TextView posts, followers, following, fullname, bio, username;
     Button edit_profile;
+
+    private List<String> mySaves;
+
+    RecyclerView recyclerView_saves;
+    MyFotoAdapter myFotoAdapter_saves;
+    List<Post> postList_saves;
+
     RecyclerView recyclerView;
     MyFotoAdapter myFotoAdapter;
     List<Post> postList;
-
     FirebaseUser firebaseUser;
     String profileid;
-
     ImageButton my_fotos, saved_fotos;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_post_manage, container,false);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         SharedPreferences prefs = getContext().getSharedPreferences("PREFS", Context.MODE_PRIVATE);
         profileid = prefs.getString("profileid", "none");
-        profileid = prefs.getString("profileid", FirebaseAuth.getInstance(). getCurrentUser().getUid());
+//        profileid = prefs.getString("profileid", FirebaseAuth.getInstance(). getCurrentUser().getUid());
 
         image_profile = view.findViewById(R.id.image_profile);
         posts = view.findViewById(R.id.posts);
@@ -82,10 +89,22 @@ public class PostManageFragment extends Fragment {
         myFotoAdapter = new MyFotoAdapter(getContext(), postList);
         recyclerView.setAdapter(myFotoAdapter);
 
+        recyclerView_saves = view.findViewById(R.id.recycler_view_save);
+        recyclerView_saves.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager_saves = new GridLayoutManager(getContext(), 3);
+        recyclerView_saves.setLayoutManager(linearLayoutManager_saves);
+        postList_saves = new ArrayList<>();
+        myFotoAdapter_saves = new MyFotoAdapter(getContext(), postList_saves);
+        recyclerView_saves.setAdapter(myFotoAdapter_saves);
+
+        recyclerView.setVisibility((View.VISIBLE));
+        recyclerView_saves.setVisibility(View.GONE);
+
         userInfo();
         getFollowers();
         getNrPosts();
         myFotos();
+        mysaves();
 
         if (profileid.equals(firebaseUser.getUid())){
             edit_profile.setText("Edit Profile");
@@ -94,28 +113,21 @@ public class PostManageFragment extends Fragment {
             saved_fotos.setVisibility(View.GONE);
         }
 
-        edit_profile.setOnClickListener(new View.OnClickListener() {
+        my_fotos.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                String btn = edit_profile.getText().toString();
-
-                if (btn.equals("Edit Profile")){
-                    // go to EditProfile
-                } else if (btn.equals("follow")){
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid())
-                            .child("following").child(profileid).setValue(true);
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(profileid)
-                            .child("followers").child(firebaseUser.getUid()).setValue(true);
-
-                } else if (btn.equals("following")){
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid())
-                            .child("following").child(profileid).removeValue();
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(profileid)
-                            .child("followers").child(firebaseUser.getUid()).removeValue();
-                }
+            public void onClick(View view){
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerView_saves.setVisibility(View.GONE);
             }
         });
 
+        saved_fotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                recyclerView.setVisibility(View.GONE);
+                recyclerView_saves.setVisibility(View.VISIBLE);
+            }
+        });
         return view;
     }
 
@@ -215,6 +227,7 @@ public class PostManageFragment extends Fragment {
             }
         });
     }
+
     private void myFotos(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
         reference.addValueEventListener(new ValueEventListener() {
@@ -233,6 +246,52 @@ public class PostManageFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void mysaves(){
+        mySaves = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Saves")
+                .child(firebaseUser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    mySaves.add(snapshot.getKey());
+                }
+
+                readSaves();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void readSaves(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                postList_saves.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        Post post = snapshot.getValue(Post.class);
+
+                        for(String id : mySaves){
+                            if(post.getPostid().equals(id)){
+                                postList_saves.add(post);
+                            }
+                        }
+                }
+                myFotoAdapter_saves.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {
 
             }
         });

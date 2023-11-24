@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.sonminsu.FollowersActivity;
+//import com.example.sonminsu.FollowersActivity;
 import com.example.sonminsu.ModifyActivity;
 import com.example.sonminsu.R;
 import com.example.sonminsu.SettingActivity;
@@ -62,7 +62,18 @@ public class ProfileFragment extends Fragment {
             }
 
         });
+        RelativeLayout layout3 = view.findViewById(R.id.bookmarks_wrap);
+        layout3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new BookmarkFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
 
+        });
 
 
 

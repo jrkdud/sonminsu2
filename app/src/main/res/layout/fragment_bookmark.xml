@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.PostManageFragment">
+    tools:context=".Fragment.BookmarkFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -75,6 +75,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -102,7 +103,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="35dp"
-                            android:visibility="gone"
                             android:orientation="vertical">
 
                             <TextView
@@ -125,7 +125,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="35dp"
-                            android:visibility="gone"
                             android:orientation="vertical">
 
                             <TextView
@@ -196,6 +195,7 @@
                     android:layout_weight="1"
                     android:id="@+id/my_fotos"
                     android:src="@drawable/ic_grid"
+                    android:visibility="gone"
                     style="?android:attr/buttonBarButtonStyle"/>
 
                 <ImageButton
@@ -204,7 +204,7 @@
                     android:layout_weight="1"
                     android:id="@+id/saved_fotos"
                     android:src="@drawable/ic_save"
-                    android:visibility="gone"
+
                     style="?android:attr/buttonBarButtonStyle"/>
 
             </LinearLayout>
