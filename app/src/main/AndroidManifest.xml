@@ -16,8 +16,9 @@
         android:theme="@style/Theme.Sonminsu"
         tools:targetApi="31">
         <activity
-            android:name=".PostManageActivity"
+            android:name=".EditProfileActivity"
             android:exported="false" />
+
         <activity
             android:name=".CommentsActivity"
             android:exported="false" />

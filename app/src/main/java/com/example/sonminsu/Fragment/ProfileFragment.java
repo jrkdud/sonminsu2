@@ -7,18 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 //import com.example.sonminsu.FollowersActivity;
+import com.example.sonminsu.EditProfileActivity;
 import com.example.sonminsu.ModifyActivity;
 import com.example.sonminsu.R;
+import com.example.sonminsu.RegisterActivity;
 import com.example.sonminsu.SettingActivity;
+import com.example.sonminsu.StartActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -26,6 +32,10 @@ public class ProfileFragment extends Fragment {
 
     FirebaseUser firebaseUser;
     String profileid;
+
+    private TextView profile_edit;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,19 +85,32 @@ public class ProfileFragment extends Fragment {
 
         });
 
+        profile_edit = view.findViewById(R.id.profile_edit);
+        profile_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // EditProfileActivity로 전환하기 위해 Intent 생성
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
 
+                // startActivity를 사용하여 새로운 Activity로 전환
+                startActivity(intent);
 
-//        private void addNotifications() {
-//            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(profileid);
-//
-//            HashMap<String, Object> hashMap = new HashMap<>();
-//            hashMap.put("userid", firebaseUser.getUid());
-//            hashMap.put("text", "started following you");
-//            hashMap.put("postid", "");
-//            hashMap.put("ispost", false);
-//
-//            reference.push().setValue(hashMap);
-//        }
+                addNotifications();
+            }
+        });
+
         return view;
+    }
+
+    private void addNotifications() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(profileid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userid", firebaseUser.getUid());
+        hashMap.put("text", "started following you");
+        hashMap.put("postid", "");
+        hashMap.put("ispost", false);
+
+        reference.push().setValue(hashMap);
     }
 }
