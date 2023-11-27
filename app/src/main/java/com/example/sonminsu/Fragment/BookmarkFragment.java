@@ -67,7 +67,7 @@ public class BookmarkFragment extends Fragment {
 
         SharedPreferences prefs = getContext().getSharedPreferences("PREFS", Context.MODE_PRIVATE);
         profileid = prefs.getString("profileid", "none");
-//        profileid = prefs.getString("profileid", FirebaseAuth.getInstance(). getCurrentUser().getUid());
+        profileid = prefs.getString("profileid", FirebaseAuth.getInstance(). getCurrentUser().getUid());
 
         image_profile = view.findViewById(R.id.image_profile);
         posts = view.findViewById(R.id.posts);
