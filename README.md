@@ -31,7 +31,7 @@
 ##### Tools : Android Studio, Github, Figma
 
 <img width="300" alt="image" src="https://github.com/jrkdud/sonminsu2/blob/main/app/src/main/res/drawable/sms.png">  
----  
+
 
 ### **3.서비스 기능**
 
