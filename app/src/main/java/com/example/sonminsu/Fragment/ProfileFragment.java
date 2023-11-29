@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 //import com.example.sonminsu.FollowersActivity;
+import com.bumptech.glide.Glide;
 import com.example.sonminsu.EditProfileActivity;
 import com.example.sonminsu.LoginActivity;
 import com.example.sonminsu.MainActivity;
@@ -41,6 +43,7 @@ public class ProfileFragment extends Fragment {
     String profileid;
 
     private TextView profile_edit, logout, username;
+    ImageView image_profile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,22 +59,23 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // username TextView를 찾습니다.
         username = view.findViewById(R.id.username);
+        image_profile = view.findViewById(R.id.image_profile);
 
-        // FirebaseUser 객체를 가져옵니다.
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        // FirebaseDatabase의 참조를 가져옵니다.
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
-        // ValueEventListener를 추가하여 데이터베이스의 데이터 변화를 감지합니다.
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // 데이터베이스에서 사용자 이름을 가져와 TextView에 설정합니다.
                 String usernameFromDB = dataSnapshot.child("username").getValue(String.class);
                 username.setText(usernameFromDB);
+
+                // 데이터베이스에서 이미지 URL을 가져와 CircleImageView에 설정합니다.
+                String imageUrlFromDB = dataSnapshot.child("imageurl").getValue(String.class);
+                Glide.with(getContext()).load(imageUrlFromDB).into(image_profile);
             }
 
             @Override
@@ -79,6 +83,7 @@ public class ProfileFragment extends Fragment {
                 // 데이터베이스에서 데이터를 읽는 데 실패했을 때 호출됩니다.
             }
         });
+
 
 
         RelativeLayout layout = view.findViewById(R.id.pf_edit_wrap);
