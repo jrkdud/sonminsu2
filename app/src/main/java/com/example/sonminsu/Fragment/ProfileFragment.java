@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,9 +23,12 @@ import com.example.sonminsu.RegisterActivity;
 import com.example.sonminsu.SettingActivity;
 import com.example.sonminsu.StartActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -35,7 +39,7 @@ public class ProfileFragment extends Fragment {
     FirebaseUser firebaseUser;
     String profileid;
 
-    private TextView profile_edit, logout;
+    private TextView profile_edit, logout, username;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +52,30 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        // username TextView를 찾습니다.
+        username = view.findViewById(R.id.username);
+
+        // FirebaseUser 객체를 가져옵니다.
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        // FirebaseDatabase의 참조를 가져옵니다.
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        // ValueEventListener를 추가하여 데이터베이스의 데이터 변화를 감지합니다.
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // 데이터베이스에서 사용자 이름을 가져와 TextView에 설정합니다.
+                String usernameFromDB = dataSnapshot.child("username").getValue(String.class);
+                username.setText(usernameFromDB);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // 데이터베이스에서 데이터를 읽는 데 실패했을 때 호출됩니다.
             }
         });
 
