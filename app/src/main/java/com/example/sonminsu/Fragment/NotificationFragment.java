@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.example.sonminsu.Adapter.NotificationAdapter;
+import com.example.sonminsu.MainActivity;
 import com.example.sonminsu.Model.Notification;
 import com.example.sonminsu.R;
 import com.example.sonminsu.SettingActivity;
@@ -92,4 +93,11 @@ public class NotificationFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).updateNavigationBarState(R.id.navigation_alarm);
+    }
+
 }

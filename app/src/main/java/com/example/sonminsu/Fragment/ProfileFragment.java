@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 //import com.example.sonminsu.FollowersActivity;
 import com.example.sonminsu.EditProfileActivity;
 import com.example.sonminsu.LoginActivity;
+import com.example.sonminsu.MainActivity;
 import com.example.sonminsu.ModifyActivity;
 import com.example.sonminsu.R;
 import com.example.sonminsu.RegisterActivity;
@@ -157,4 +158,11 @@ public class ProfileFragment extends Fragment {
 
         reference.push().setValue(hashMap);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).updateNavigationBarState(R.id.navigation_profile);
+    }
+
 }

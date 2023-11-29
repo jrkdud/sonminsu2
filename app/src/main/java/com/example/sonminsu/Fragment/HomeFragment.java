@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sonminsu.Adapter.PostAdapter;
+import com.example.sonminsu.MainActivity;
 import com.example.sonminsu.Model.Post;
 import com.example.sonminsu.R;
 import com.example.sonminsu.SettingActivity;
@@ -114,17 +115,10 @@ public class HomeFragment extends Fragment {
         });
     }
 
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        ImageButton settingsButton = view.findViewById(R.id.settings_btn);
-//        settingsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), SettingActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).updateNavigationBarState(R.id.navigation_home);
+    }
+
 }

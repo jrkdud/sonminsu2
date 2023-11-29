@@ -102,4 +102,9 @@ public class MainActivity extends AppCompatActivity {
         // Commit the transaction:
         transaction.commit();
     }
+
+    public void updateNavigationBarState(int itemId) {
+        navigationBarView.setSelectedItemId(itemId);
+    }
+
 }

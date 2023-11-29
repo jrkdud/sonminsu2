@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.sonminsu.Adapter.UserAdapter;
+import com.example.sonminsu.MainActivity;
 import com.example.sonminsu.Model.User;
 import com.example.sonminsu.R;
 import com.example.sonminsu.SettingActivity;
@@ -126,4 +127,11 @@ public class SearchFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).updateNavigationBarState(R.id.navigation_search);
+    }
+
 }
