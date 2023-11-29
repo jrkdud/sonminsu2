@@ -316,7 +316,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             }
         });
     }
-    private void isSaved(String postid, ImageView imageView){
+    private void isSaved(final String postid, final ImageView imageView){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("saves")
@@ -329,7 +329,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                     imageView.setImageResource(R.drawable.ic_save_black);
                     imageView.setTag("saved");
                 } else {
-                    imageView.setImageResource(R.drawable.ic_save_black);
+                    imageView.setImageResource(R.drawable.ic_save);
                     imageView.setTag("save");
                 }
             }

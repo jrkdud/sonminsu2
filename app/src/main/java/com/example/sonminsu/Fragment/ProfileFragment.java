@@ -37,10 +37,6 @@ public class ProfileFragment extends Fragment {
 
     private TextView profile_edit, logout;
 
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
