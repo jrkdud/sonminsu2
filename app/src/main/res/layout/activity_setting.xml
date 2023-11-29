@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="환경설정"
-            android:textSize="17dp"
+            android:textSize="18dp"
             android:fontFamily="@font/nanumsquare_acb"
             android:gravity="center"/>
 
@@ -60,7 +60,7 @@
             android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
             android:text="알림"
-            android:textSize="14dp"
+            android:textSize="16dp"
             android:gravity="center_vertical" />
 
     </RelativeLayout>
@@ -89,7 +89,7 @@
             android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
             android:text="방해금지모드"
-            android:textSize="14dp"
+            android:textSize="16dp"
             android:gravity="center_vertical" />
 
     </RelativeLayout>
@@ -118,7 +118,7 @@
             android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
             android:text="다크모드"
-            android:textSize="14dp"
+            android:textSize="16dp"
             android:gravity="center_vertical" />
 
     </RelativeLayout>
@@ -147,7 +147,7 @@
             android:layout_marginStart="12dp"
             android:layout_centerVertical="true"
             android:text="도움말"
-            android:textSize="14dp"
+            android:textSize="16dp"
             android:gravity="center_vertical" />
 
     </RelativeLayout>
