@@ -8,13 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -25,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -56,7 +57,7 @@ public class PostActivity extends AppCompatActivity {
     String myUrl = "";
     StorageReference storageReference;
 
-    ImageView image_added, image_gallery;
+    ImageView image_added, image_gallery, backBtn;
     TextView post;
     EditText description;
     ProgressDialog pd;
@@ -64,6 +65,9 @@ public class PostActivity extends AppCompatActivity {
     private ExecutorService executorService;
 
     private static final int YOUR_REQUEST_CODE = 123;
+
+    // 선택 이력을 저장하는 스택
+    private Stack<Integer> navigationStack = new Stack<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,22 @@ public class PostActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference("posts");
 
         executorService = Executors.newSingleThreadExecutor();
+
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 이전 선택을 SharedPreferences에서 가져옴
+                SharedPreferences sharedPref = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+                int previousSelection = sharedPref.getInt("previous_selection", 0);
+
+                // MainActivity로 돌아가며 이전 선택을 전달
+                Intent intent = new Intent(PostActivity.this, MainActivity.class);
+                intent.putExtra("previous_selection", previousSelection);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         // 이미지뷰 클릭 시 카메라 열기
         image_added.setOnClickListener(new View.OnClickListener() {
