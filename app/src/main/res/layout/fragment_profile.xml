@@ -11,12 +11,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="?android:attr/windowBackground"
-            app:contentInsetStart="0dp">
+            android:id="@+id/toorbar"
+            android:background="?android:attr/windowBackground">
 
             <RelativeLayout
                 android:id="@+id/top_bar"
@@ -60,7 +59,7 @@
                     android:src="@drawable/setting" />
 
             </RelativeLayout>
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
 
 
         <RelativeLayout

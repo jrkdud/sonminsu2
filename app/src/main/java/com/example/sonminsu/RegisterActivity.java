@@ -111,6 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
                     hashMap.put("username", username.toLowerCase());
                     hashMap.put("fullname", fullname);
                     hashMap.put("bio", "");
+                    hashMap.put("email", email); // 이 부분을 추가했습니다.
                     hashMap.put("imageurl", "https://firebasestorage.googleapis.com/v0/b/smsfirebase-cbc65.appspot.com/o/person.png?alt=media&token=9dcd124e-fe98-4cd5-9af3-17ee6dfcf603");
 
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {

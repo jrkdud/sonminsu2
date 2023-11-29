@@ -8,16 +8,10 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/bar"
         android:background="?android:attr/windowBackground">
 
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/toolbar"
-            android:background="?android:attr/windowBackground"
-            app:contentInsetStart="0dp">
 
             <RelativeLayout
                 android:id="@+id/top_bar"
@@ -50,9 +44,6 @@
                     android:scaleType="centerInside"
                     android:padding="0dp" />
             </RelativeLayout>
-
-
-        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
