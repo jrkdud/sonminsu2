@@ -56,39 +56,21 @@ public class EditProfileActivity extends AppCompatActivity {
         eye2 = findViewById(R.id.eye2);
         btn_modify = findViewById(R.id.btn_modify);
 
-
-
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                User user = snapshot.getValue(User.class);
-//                et_name.setText(user.getUsername());
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
         ImageButton settingsButton = findViewById(R.id.settings_btn);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditProfileActivity.this, SettingActivity.class);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
-
-
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
-                intent.putExtra("fragment", "profile");
+                intent.putExtra("profileFragment", true);
                 startActivity(intent);
                 finish();
             }
@@ -127,26 +109,6 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-//        btn_modify.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                updateProfile(et_name.getText().toString(),
-//                        et_id.getText().toString(),
-//                        et_pass.getText().toString(),
-//                        et_email.getText().toString());
-//            }
-//            private void updateProfile(String et_name, String et_id, String et_pass, String et_email){
-//                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-//
-//                HashMap<String, Object> hashMap = new HashMap<>();
-//                hashMap.put("et_name", username);
-//
-//                reference.updateChildren(hashMap);
-//
-//            }
-//
-//        });
-
         btn_modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,7 +116,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 String userid = et_id.getText().toString();
                 String passwd = et_pass.getText().toString();
                 String name = et_name.getText().toString();
-                int email = Integer.parseInt(et_email.getText().toString());
+                String email = et_email.getText().toString();
 
             }
         });

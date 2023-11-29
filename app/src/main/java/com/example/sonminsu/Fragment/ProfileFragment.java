@@ -95,6 +95,9 @@ public class ProfileFragment extends Fragment {
                 // startActivity를 사용하여 새로운 Activity로 전환
                 startActivity(intent);
 
+                // 애니메이션 없애기
+                getActivity().overridePendingTransition(0, 0);
+
                 addNotifications();
             }
         });

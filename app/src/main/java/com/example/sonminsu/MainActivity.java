@@ -1,6 +1,7 @@
 package com.example.sonminsu;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
         profileFragment = new ProfileFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+
+        // Check if we're supposed to load the ProfileFragment:
+        if (getIntent().getBooleanExtra("profileFragment", false)) {
+            loadProfileFragment();
+        }
 
         navigationBarView = findViewById(R.id.bottom_navigation);
 
@@ -84,5 +90,16 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();  // 스택이 비어있으면 기본 뒤로 가기 동작 수행
         }
+    }
+
+    private void loadProfileFragment() {
+        // Begin a new transaction:
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Replace the current fragment with the existing ProfileFragment:
+        transaction.replace(R.id.fragment_container, profileFragment);
+
+        // Commit the transaction:
+        transaction.commit();
     }
 }
