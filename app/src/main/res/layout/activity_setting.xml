@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:background="#FFFFFF">
 
@@ -20,6 +20,7 @@
             android:layout_centerInParent="true"
             android:text="환경설정"
             android:textSize="17dp"
+            android:fontFamily="@font/nanumsquare_acb"
             android:gravity="center"/>
 
         <ImageButton
@@ -59,7 +60,7 @@
             android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
             android:text="알림"
-            android:textSize="13sp"
+            android:textSize="14dp"
             android:gravity="center_vertical" />
 
     </RelativeLayout>
@@ -88,7 +89,7 @@
             android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
             android:text="방해금지모드"
-            android:textSize="13sp"
+            android:textSize="14dp"
             android:gravity="center_vertical" />
 
     </RelativeLayout>
@@ -117,7 +118,7 @@
             android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
             android:text="다크모드"
-            android:textSize="12sp"
+            android:textSize="14dp"
             android:gravity="center_vertical" />
 
     </RelativeLayout>
@@ -146,7 +147,7 @@
             android:layout_marginStart="12dp"
             android:layout_centerVertical="true"
             android:text="도움말"
-            android:textSize="12sp"
+            android:textSize="14dp"
             android:gravity="center_vertical" />
 
     </RelativeLayout>

@@ -44,6 +44,7 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:text="마이페이지"
+                    android:fontFamily="@font/nanumsquare_acb"
                     android:textSize="17dp" />
 
                 <ImageButton
@@ -83,6 +84,7 @@
                 android:layout_marginStart="21dp"
                 android:layout_toEndOf="@+id/userphoto"
                 android:text="username"
+                android:fontFamily="@font/nanumsquare_acb"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="15sp" />
 
@@ -112,7 +114,7 @@
                 android:layout_toEndOf="@+id/user_ic"
                 android:gravity="center_vertical"
                 android:text="내 정보 수정"
-                android:textSize="13dp" />
+                android:textSize="14dp" />
 
         </RelativeLayout>
 
@@ -141,7 +143,7 @@
                 android:layout_toEndOf="@+id/lists_ic"
                 android:gravity="center_vertical"
                 android:text="게시물관리"
-                android:textSize="13dp" />
+                android:textSize="14dp" />
 
         </RelativeLayout>
 
@@ -170,7 +172,7 @@
                 android:layout_toEndOf="@+id/bookmarks_ic"
                 android:gravity="center_vertical"
                 android:text="북마크"
-                android:textSize="12dp" />
+                android:textSize="14dp" />
 
         </RelativeLayout>
 
@@ -199,7 +201,7 @@
                 android:layout_toEndOf="@+id/logout_ic"
                 android:gravity="center_vertical"
                 android:text="로그아웃"
-                android:textSize="13dp" />
+                android:textSize="14dp" />
 
         </RelativeLayout>
 
@@ -228,7 +230,7 @@
                 android:layout_toEndOf="@+id/userremove_ic"
                 android:gravity="center_vertical"
                 android:text="회원탈퇴"
-                android:textSize="13dp" />
+                android:textSize="14dp" />
 
         </RelativeLayout>
 
