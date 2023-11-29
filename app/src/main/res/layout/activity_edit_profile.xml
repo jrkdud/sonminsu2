@@ -83,15 +83,14 @@
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/nickname"
                 android:ems="10"
-                android:hint="닉네임을 입력하세요"
+                android:hint="변경할 닉네임을 입력해주세요"
                 android:inputType="textPersonName"
-                android:paddingLeft="7dp"
+                android:paddingLeft="10dp"
                 android:paddingTop="10dp"
-                android:text=""
                 android:textColorHint="#FFE4CC"
                 android:textSize="17dp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/et_id"
                 android:layout_width="320dp"
                 android:layout_height="50dp"
@@ -99,10 +98,9 @@
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/name"
                 android:ems="10"
-                android:hint="이름을 입력하세요"
-                android:inputType="textPersonName"
-                android:paddingLeft="7dp"
-                android:paddingTop="10dp"
+                android:hint="이름"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
                 android:text=""
                 android:textColorHint="#FFE4CC"
                 android:textSize="17dp" />
@@ -119,9 +117,9 @@
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/password"
                     android:ems="10"
-                    android:hint="영문, 숫자, 특수문자 포함 8자 이상"
+                    android:hint="현재 비밀번호를 입력해주세요"
                     android:inputType="textPassword"
-                    android:paddingLeft="7dp"
+                    android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:textColorHint="#FFE4CC"
                     android:textSize="17dp" />
@@ -153,7 +151,7 @@
                     android:ems="10"
                     android:hint="변경할 비밀번호를 입력해주세요"
                     android:inputType="textPassword"
-                    android:paddingLeft="7dp"
+                    android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:textColorHint="#FFE4CC"
                     android:textSize="17dp" />
@@ -172,7 +170,7 @@
             </RelativeLayout>
 
 
-            <EditText
+            <TextView
                 android:id="@+id/et_email"
                 android:layout_width="320dp"
                 android:layout_height="50dp"
@@ -180,12 +178,10 @@
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/emailaddress"
                 android:ems="10"
-                android:hint="이메일을 입력하세요"
-                android:inputType="textPersonName"
-                android:paddingLeft="7dp"
-                android:paddingTop="10dp"
-                android:text=""
-                android:textColorHint="#FFE4CC"
+                android:text="이메일"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:textColor="#FFE4CC"
                 android:textSize="17dp" />
 
             <Button
