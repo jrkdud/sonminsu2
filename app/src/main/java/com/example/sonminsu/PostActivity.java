@@ -57,7 +57,7 @@ public class PostActivity extends AppCompatActivity {
     String myUrl = "";
     StorageReference storageReference;
 
-    ImageView image_added, image_gallery, backBtn;
+    ImageView image_added, image_gallery;
     TextView post;
     EditText description;
     ProgressDialog pd;
@@ -83,7 +83,7 @@ public class PostActivity extends AppCompatActivity {
 
         executorService = Executors.newSingleThreadExecutor();
 
-        backBtn = findViewById(R.id.back_btn);
+        ImageButton backBtn = findViewById(R.id.back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +96,16 @@ public class PostActivity extends AppCompatActivity {
                 intent.putExtra("previous_selection", previousSelection);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        //환경설정
+        ImageButton settingsButton = findViewById(R.id.settings_btn);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, SettingActivity.class);
+                startActivity(intent);
             }
         });
 
