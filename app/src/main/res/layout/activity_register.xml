@@ -70,7 +70,7 @@
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/login"
                     android:ems="10"
-                    android:hint="아이디를 입력하세요"
+                    android:hint="닉네임을 입력하세요"
                     android:inputType="textPersonName"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
