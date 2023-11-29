@@ -2,6 +2,7 @@ package com.example.sonminsu;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,8 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.sonminsu.Model.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,7 +30,8 @@ import java.util.HashMap;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private EditText et_id, et_pass, et_pass2, et_name, et_email;
+    private EditText et_pass, et_pass2, et_name;
+    private TextView et_id, et_email;
     private Button btn_modify;
     private ImageButton eye, eye2, back;
     private boolean isEyeOff = true;
@@ -120,6 +124,33 @@ public class EditProfileActivity extends AppCompatActivity {
 
             }
         });
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User userProfile = dataSnapshot.getValue(User.class);
+
+                    if (userProfile != null) {
+                        String fullname = userProfile.getFullname();
+                        String email = userProfile.getEmail();
+
+                        et_id.setText(fullname);
+                        et_email.setText(email);
+                        et_id.setTextColor(ContextCompat.getColor(EditProfileActivity.this, R.color.colorMain));
+                        et_email.setTextColor(ContextCompat.getColor(EditProfileActivity.this, R.color.colorMain));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // 에러 처리
+                }
+            });
+        }
 
     }
 }
