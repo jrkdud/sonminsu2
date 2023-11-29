@@ -81,11 +81,11 @@
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/nickname"
                 android:ems="10"
-                android:text="닉네임을 입력하세요"
+                android:hint="변경할 닉네임을 입력해주세요"
                 android:inputType="textPersonName"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
-                android:textColor="#FFE4CC"
+                android:textColorHint="#FFE4CC"
                 android:textSize="17dp" />
 
             <TextView
@@ -115,7 +115,7 @@
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/password"
                     android:ems="10"
-                    android:hint="영문, 숫자, 특수문자 포함 8자 이상"
+                    android:hint="현재 비밀번호를 입력해주세요"
                     android:inputType="textPassword"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
