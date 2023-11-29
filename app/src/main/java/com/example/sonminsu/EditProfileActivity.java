@@ -87,7 +87,10 @@ public class EditProfileActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // 현재 액티비티를 종료합니다. 이 코드가 없으면 이전 액티비티로 돌아갔다가 뒤로 가기 버튼을 누르면 현재 액티비티로 다시 돌아오게 됩니다.
+                Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
+                intent.putExtra("fragment", "profile");
+                startActivity(intent);
+                finish();
             }
         });
 
