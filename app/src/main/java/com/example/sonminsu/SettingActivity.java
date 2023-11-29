@@ -18,6 +18,7 @@ public class SettingActivity extends Activity {
             public void onClick(View v) {
                 finish();
             }
+
         });
     }
 }
