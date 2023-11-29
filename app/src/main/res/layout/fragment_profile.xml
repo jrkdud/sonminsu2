@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,36 +10,56 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <RelativeLayout
-            android:id="@+id/top_bar"
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentTop="true"
-            android:background="#FFFFFF">
+            android:layout_height="50dp"
+            android:background="?android:attr/windowBackground"
+            app:contentInsetStart="0dp">
 
-            <TextView
-                android:id="@+id/my_page"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="마이페이지"
-                android:textSize="17dp"
-                android:gravity="center"/>
+            <RelativeLayout
+                android:id="@+id/top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#FFFFFF">
 
-            <ImageButton
-                android:id="@+id/settings_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/setting"
-                android:background="@android:color/transparent"
-                android:scaleType="centerInside"
-                android:padding="0dp" />
+                <ImageButton
+                    android:id="@+id/logo_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/sms" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/my_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="마이페이지"
+                    android:textSize="17dp" />
 
+                <ImageButton
+                    android:id="@+id/settings_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/setting" />
+
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
 
 
         <RelativeLayout
@@ -50,22 +71,23 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="14dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="14dp"
                 android:background="#FF7A00" />
 
             <TextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/userphoto"
-                android:layout_marginStart="21dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="21dp"
+                android:layout_toEndOf="@+id/userphoto"
                 android:text="username"
-                android:textSize="15sp"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="15sp" />
 
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/pf_edit_wrap"
             android:layout_width="match_parent"
@@ -85,12 +107,12 @@
                 android:id="@+id/profile_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/user_ic"
-                android:layout_marginStart="16dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/user_ic"
+                android:gravity="center_vertical"
                 android:text="내 정보 수정"
-                android:textSize="13dp"
-                android:gravity="center_vertical" />
+                android:textSize="13dp" />
 
         </RelativeLayout>
 
@@ -114,12 +136,12 @@
                 android:id="@+id/list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/lists_ic"
-                android:layout_marginStart="16dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/lists_ic"
+                android:gravity="center_vertical"
                 android:text="게시물관리"
-                android:textSize="13dp"
-                android:gravity="center_vertical" />
+                android:textSize="13dp" />
 
         </RelativeLayout>
 
@@ -143,12 +165,12 @@
                 android:id="@+id/bookmarks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/bookmarks_ic"
-                android:layout_marginStart="16dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/bookmarks_ic"
+                android:gravity="center_vertical"
                 android:text="북마크"
-                android:textSize="12dp"
-                android:gravity="center_vertical" />
+                android:textSize="12dp" />
 
         </RelativeLayout>
 
@@ -172,14 +194,15 @@
                 android:id="@+id/logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/logout_ic"
-                android:layout_marginStart="12dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:layout_toEndOf="@+id/logout_ic"
+                android:gravity="center_vertical"
                 android:text="로그아웃"
-                android:textSize="13dp"
-                android:gravity="center_vertical" />
+                android:textSize="13dp" />
 
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/userremove_wrap"
             android:layout_width="match_parent"
@@ -200,15 +223,14 @@
                 android:id="@+id/userremove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/userremove_ic"
-                android:layout_marginStart="15.5dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="15.5dp"
+                android:layout_toEndOf="@+id/userremove_ic"
+                android:gravity="center_vertical"
                 android:text="회원탈퇴"
-                android:textSize="13dp"
-                android:gravity="center_vertical" />
+                android:textSize="13dp" />
 
         </RelativeLayout>
-
 
 
     </LinearLayout>
