@@ -54,6 +54,15 @@ public class HomeFragment extends Fragment {
 
         checkFollowing();
 
+        ImageButton settingsButton = view.findViewById(R.id.settings_btn);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 

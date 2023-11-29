@@ -2,13 +2,22 @@ package com.example.sonminsu;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.View;
+import android.widget.ImageButton;
 
-public class SettingActivity extends Activity {  // Activity를 상속받아야 합니다.
+public class SettingActivity extends Activity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {  // onCreate 메서드를 제대로 정의해야 합니다.
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        ImageButton backButton = findViewById(R.id.back_btn);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }
-
