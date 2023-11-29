@@ -124,9 +124,9 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
 
                 // 애니메이션 없애기
-                getActivity().overridePendingTransition(0, 0);
-
-                addNotifications();
+                if (getActivity() != null) {
+                    getActivity().overridePendingTransition(0, 0);
+                }
             }
         });
 
@@ -142,8 +142,6 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-
 
         return view;
     }
