@@ -69,6 +69,24 @@ public class SearchFragment extends Fragment {
         postAdapter = new PostAdapter(getContext(), mPosts); // Assuming you have a PostAdapter
         recyclerViewPosts.setAdapter(postAdapter);
 
+        Bundle args = getArguments();
+        if (args != null) {
+            String hashtag = args.getString("hashtag");
+            if (hashtag != null) {
+                search_bar.setText(hashtag);
+                recyclerViewUsers.setVisibility(View.GONE);
+                searchPosts(hashtag);
+            } else {
+                recyclerViewUsers.setVisibility(View.VISIBLE);
+                readUsers();
+            }
+        } else {
+            recyclerViewUsers.setVisibility(View.VISIBLE);
+            readUsers();
+        }
+
+
+
         readUsers();
 
         search_bar.addTextChangedListener(new TextWatcher() {

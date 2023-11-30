@@ -40,12 +40,27 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
 
+        navigationBarView = findViewById(R.id.bottom_navigation);
 
         if (getIntent().getBooleanExtra("profileFragment", false)) {
             loadProfileFragment();
         }
 
-        navigationBarView = findViewById(R.id.bottom_navigation);
+        String hashtag = getIntent().getStringExtra("hashtag");
+        if (hashtag != null) {
+            // Load SearchFragment with the hashtag
+            Bundle args = new Bundle();
+            args.putString("hashtag", hashtag);
+            searchFragment.setArguments(args);
+
+            // Replace the existing fragment with the SearchFragment
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, searchFragment).commit();
+
+            // Update the navigation bar state to Search
+            updateNavigationBarState(R.id.navigation_search);
+        }
+
+
 
         navigationBarView.setOnItemSelectedListener(item -> {
 
@@ -53,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
             navigationStack.push(itemId);
 
             if (itemId == R.id.navigation_home) {
-                homeFragment.checkFollowing();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
             } else if (itemId == R.id.navigation_search) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, searchFragment).commit();

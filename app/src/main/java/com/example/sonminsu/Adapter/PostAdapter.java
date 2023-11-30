@@ -26,6 +26,7 @@ import com.example.sonminsu.CommentsActivity;
 //import com.example.sonminsu.FollowersActivity;
 import com.example.sonminsu.Fragment.PostDetailFragment;
 import com.example.sonminsu.Fragment.ProfileFragment;
+import com.example.sonminsu.MainActivity;
 import com.example.sonminsu.Model.Post;
 import com.example.sonminsu.Model.User;
 import com.example.sonminsu.R;
@@ -181,9 +182,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             spannableString.setSpan(new ClickableSpan() {
                 @Override
                 public void onClick(View widget) {
-                    List<Post> filteredPosts = filterPostsByHashtag(tag);
-                    mPost = filteredPosts;
-                    notifyDataSetChanged();
+                    Intent intent = new Intent(mContext, MainActivity.class);
+                    intent.putExtra("hashtag", tag);
+                    mContext.startActivity(intent);
                 }
 
                 @Override
@@ -194,11 +195,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             }, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
+
         viewHolder.description.setText(spannableString);
         viewHolder.description.setMovementMethod(LinkMovementMethod.getInstance());
-
-
-
 //        viewHolder.likes.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View view) {
@@ -272,16 +271,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             }
         });
     }
-    private List<Post> filterPostsByHashtag(String hashtag) {
-        List<Post> filteredPosts = new ArrayList<>();
-        for (Post post : mPost) {
-            if (post.getDescription().contains(hashtag)) {
-                filteredPosts.add(post);
-            }
-        }
-        return filteredPosts;
-    }
-
 
     private void isLiked(String postid, ImageView imageView) {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -320,7 +309,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         reference.push().setValue(hashMap);
     }
 
-
     private void nrLikes(TextView likes, String postid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Likes")
                 .child(postid);
@@ -339,7 +327,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             }
         });
     }
-
 
     private void publisherInfo(final ImageView image_profile, final TextView username, final TextView publisher, final String userid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
@@ -384,5 +371,4 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             }
         });
     }
-
 }
