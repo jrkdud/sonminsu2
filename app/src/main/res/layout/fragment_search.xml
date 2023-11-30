@@ -70,19 +70,22 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/windowBackground">
+                android:background="#EBEFF1"
+                >
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/search1" />
+                    android:layout_width="22dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/search_ic"
+                    android:layout_marginRight="10dp"/>
 
                 <EditText
                     android:id="@+id/search_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="15dp"
                     android:background="@android:color/transparent"
+                    android:textCursorDrawable="@color/colorMain"
                     android:hint="Search..." />
 
             </androidx.appcompat.widget.Toolbar>

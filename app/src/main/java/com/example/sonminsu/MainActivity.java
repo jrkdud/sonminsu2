@@ -48,15 +48,13 @@ public class MainActivity extends AppCompatActivity {
 
         String hashtag = getIntent().getStringExtra("hashtag");
         if (hashtag != null) {
-            // Load SearchFragment with the hashtag
             Bundle args = new Bundle();
             args.putString("hashtag", hashtag);
             searchFragment.setArguments(args);
 
-            // Replace the existing fragment with the SearchFragment
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, searchFragment).commit();
 
-            // Update the navigation bar state to Search
+
             updateNavigationBarState(R.id.navigation_search);
         }
 

@@ -98,34 +98,25 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().isEmpty()) {
-                    // If the search query is empty, clear the lists and notify adapters
                     mUsers.clear();
                     mPosts.clear();
                     userAdapter.notifyDataSetChanged();
                     postAdapter.notifyDataSetChanged();
 
-                    // Show the user list
                     recyclerViewUsers.setVisibility(View.VISIBLE);
 
-                    // Show the full list of users
                     readUsers();
                 } else {
-                    // If the search query is not empty, search for users and posts
                     searchUsers(charSequence.toString().toLowerCase());
                     searchPosts(charSequence.toString().toLowerCase());
 
-                    // Check if the search query starts with '#'
                     if (charSequence.toString().startsWith("#")) {
-                        // If it starts with '#', hide the user list
                         recyclerViewUsers.setVisibility(View.GONE);
                     } else {
-                        // If it doesn't start with '#', show the user list
                         recyclerViewUsers.setVisibility(View.VISIBLE);
                     }
                 }
             }
-
-
 
 
 
@@ -181,7 +172,7 @@ public class SearchFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
 
-                    // Check if the description contains the entered text
+
                     if (post.getDescription().toLowerCase().contains(s.toLowerCase())) {
                         mPosts.add(post);
                     }
@@ -233,7 +224,6 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    @Override
     public void onResume() {
         super.onResume();
         ((MainActivity) getActivity()).updateNavigationBarState(R.id.navigation_search);
