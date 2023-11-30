@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -36,6 +38,7 @@ public class SearchFragment extends Fragment {
 
     private RecyclerView recyclerViewUsers;
     private RecyclerView recyclerViewPosts;
+
     private UserAdapter userAdapter;
     private PostAdapter postAdapter;
     private List<User> mUsers;
@@ -48,11 +51,11 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        recyclerViewUsers = view.findViewById(R.id.recycler_view);
+        recyclerViewUsers = view.findViewById(R.id.recycler_view_users);
         recyclerViewUsers.setHasFixedSize(true);
         recyclerViewUsers.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recyclerViewPosts = view.findViewById(R.id.recycler_view);
+        recyclerViewPosts = view.findViewById(R.id.recycler_view_posts);
         recyclerViewPosts.setHasFixedSize(true);
         recyclerViewPosts.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -82,6 +85,9 @@ public class SearchFragment extends Fragment {
                     mPosts.clear();
                     userAdapter.notifyDataSetChanged();
                     postAdapter.notifyDataSetChanged();
+
+                    // Show the full list of users
+                    readUsers();
                 } else {
                     // If the search query is not empty, search for users and posts
                     searchUsers(charSequence.toString().toLowerCase());
