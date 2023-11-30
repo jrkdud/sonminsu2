@@ -3,7 +3,13 @@ package com.example.sonminsu.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.Image;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,8 +37,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     public Context mContext;
@@ -164,6 +174,31 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             }
         });
 
+        SpannableString spannableString = new SpannableString(post.getDescription());
+        Matcher matcher = Pattern.compile("#(\\w+)").matcher(spannableString);
+        while (matcher.find()) {
+            String tag = matcher.group(0);
+            spannableString.setSpan(new ClickableSpan() {
+                @Override
+                public void onClick(View widget) {
+                    List<Post> filteredPosts = filterPostsByHashtag(tag);
+                    mPost = filteredPosts;
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    ds.setColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorMain)); // Set hashtag color to blue
+                    ds.setUnderlineText(false);
+                }
+            }, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        viewHolder.description.setText(spannableString);
+        viewHolder.description.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+
 //        viewHolder.likes.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View view) {
@@ -237,7 +272,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             }
         });
     }
-
+    private List<Post> filterPostsByHashtag(String hashtag) {
+        List<Post> filteredPosts = new ArrayList<>();
+        for (Post post : mPost) {
+            if (post.getDescription().contains(hashtag)) {
+                filteredPosts.add(post);
+            }
+        }
+        return filteredPosts;
+    }
 
 
     private void isLiked(String postid, ImageView imageView) {

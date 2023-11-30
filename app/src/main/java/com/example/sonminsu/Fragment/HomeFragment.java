@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void checkFollowing() {
+    public void checkFollowing() {
         followingList = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
 
@@ -94,6 +94,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 
     private void readPosts() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
