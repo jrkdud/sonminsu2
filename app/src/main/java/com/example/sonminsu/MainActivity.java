@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
 
-        // Check if we're supposed to load the ProfileFragment:
+
         if (getIntent().getBooleanExtra("profileFragment", false)) {
             loadProfileFragment();
         }
@@ -50,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
         navigationBarView.setOnItemSelectedListener(item -> {
 
             int itemId = item.getItemId();
-            navigationStack.push(itemId);  // 선택 이력 저장
+            navigationStack.push(itemId);
 
-            // 선택한 아이템에 따라 프래그먼트 이동
             if (itemId == R.id.navigation_home) {
+                homeFragment.checkFollowing();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
             } else if (itemId == R.id.navigation_search) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, searchFragment).commit();
@@ -66,11 +66,12 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, profileFragment).commit();
             }
 
-            return true;  // 선택 처리 완료
+            return true;
         });
+
     }
 
-    // 뒤로 가기 버튼 처리
+
     @Override
     public void onBackPressed() {
         if (!navigationStack.isEmpty()) {

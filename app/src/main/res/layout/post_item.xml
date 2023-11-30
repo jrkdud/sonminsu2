@@ -67,7 +67,10 @@
                 android:layout_below="@+id/publisher"
                 android:textStyle="bold"
                 android:id="@+id/description"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:textColorLink="@color/colorMain" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
