@@ -69,9 +69,7 @@ public class HomeFragment extends Fragment {
 
     private void checkFollowing() {
         followingList = new ArrayList<>();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follow")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("following");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -79,6 +77,12 @@ public class HomeFragment extends Fragment {
                 followingList.clear();
                 for(DataSnapshot snapshot1 : snapshot.getChildren()) {
                     followingList.add(snapshot1.getKey());
+                }
+
+                // Add current user to the list
+                String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                if(!followingList.contains(currentUserID)) {
+                    followingList.add(currentUserID);
                 }
 
                 readPosts();
@@ -99,10 +103,8 @@ public class HomeFragment extends Fragment {
                 postLists.clear();
                 for(DataSnapshot snapshot1 : snapshot.getChildren()) {
                     Post post = snapshot1.getValue(Post.class);
-                    for (String id : followingList) {
-                        if(post.getPublisher().equals(id)) {
-                            postLists.add(post);
-                        }
+                    if(followingList.contains(post.getPublisher())) {
+                        postLists.add(post);
                     }
                 }
                 postAdapter.notifyDataSetChanged();
@@ -114,6 +116,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 
     @Override
     public void onResume() {
