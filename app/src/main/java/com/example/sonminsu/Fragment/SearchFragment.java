@@ -76,9 +76,21 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                searchUsers(charSequence.toString().toLowerCase());
-                searchPosts(charSequence.toString().toLowerCase());
+                if (charSequence.toString().trim().isEmpty()) {
+                    // If the search query is empty, clear the lists and notify adapters
+                    mUsers.clear();
+                    mPosts.clear();
+                    userAdapter.notifyDataSetChanged();
+                    postAdapter.notifyDataSetChanged();
+                } else {
+                    // If the search query is not empty, search for users and posts
+                    searchUsers(charSequence.toString().toLowerCase());
+                    searchPosts(charSequence.toString().toLowerCase());
+                }
             }
+
+
+
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -90,6 +102,12 @@ public class SearchFragment extends Fragment {
     }
 
     private void searchUsers(String s) {
+        if (s.isEmpty()) {
+            mUsers.clear();
+            userAdapter.notifyDataSetChanged();
+            return; // No need to perform the database query
+        }
+
         Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("username").startAt(s).endAt(s + "\uf8ff");
 
         query.addValueEventListener(new ValueEventListener() {
@@ -105,14 +123,19 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // Handle errors
             }
         });
     }
 
     private void searchPosts(String s) {
-        Query query = FirebaseDatabase.getInstance().getReference("Posts")
-                .orderByChild("description");
+        if (s.isEmpty()) {
+            mPosts.clear();
+            postAdapter.notifyDataSetChanged();
+            return; // No need to perform the database query
+        }
+
+        Query query = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("description");
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -135,6 +158,7 @@ public class SearchFragment extends Fragment {
             }
         });
     }
+
 
 
 
