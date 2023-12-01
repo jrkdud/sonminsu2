@@ -196,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/my_fotos"
-                    android:src="@drawable/ic_grid"
+                    android:src="@drawable/ic_apps"
                     android:visibility="gone"
                     style="?android:attr/buttonBarButtonStyle"/>
 
