@@ -132,10 +132,12 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        // 저장소 권한 확인 및 요청
+        // 권한 확인
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            // 권한이 없다면 권한 요청
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, YOUR_REQUEST_CODE);
         } else {
+            // 권한이 있다면 이미지를 불러옵니다.
             loadImage();
         }
     }
