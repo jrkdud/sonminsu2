@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="DialogTheme" parent="Theme.AppCompat.Dialog">
+        <!-- Enable content transitions -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- Specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/enter_transition</item>
+        <item name="android:windowExitTransition">@transition/exit_transition</item>
+    </style>
+</resources>

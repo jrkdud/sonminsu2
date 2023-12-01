@@ -1,18 +1,25 @@
 package com.example.sonminsu.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
+import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.transition.ChangeBounds;
+import android.transition.ChangeImageTransform;
+import android.transition.ChangeTransform;
+import android.transition.TransitionSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -128,13 +135,40 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         viewHolder.post_image.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
-                editor.putString("postid", post.getPostid());
-                editor.apply();
+                Dialog dialog = new Dialog(mContext, R.style.DialogTheme);
+                dialog.setContentView(R.layout.imageview_item);
 
-                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PostDetailFragment()).commit();
+                ImageView imageView = dialog.findViewById(R.id.dialog_image);
+                Glide.with(mContext).load(post.getPostimage()).into(imageView);
+
+                // 공유 요소 전환 설정
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    TransitionSet transitionSet = new TransitionSet();
+                    transitionSet.addTransition(new ChangeBounds());
+                    transitionSet.addTransition(new ChangeImageTransform());
+                    transitionSet.addTransition(new ChangeTransform());
+                    dialog.getWindow().setSharedElementEnterTransition(transitionSet);
+                    dialog.getWindow().setSharedElementReturnTransition(transitionSet);
+                }
+
+                imageView.setTransitionName("transition_image");
+
+                // 전체화면 설정
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+                // 뒤로가기 버튼 설정
+                ImageButton backButton = dialog.findViewById(R.id.back_button);
+                backButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
             }
         });
+
 
 
 
