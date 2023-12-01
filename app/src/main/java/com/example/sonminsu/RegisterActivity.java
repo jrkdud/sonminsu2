@@ -109,7 +109,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                     String[] imageUrls = {
                             "https://firebasestorage.googleapis.com/v0/b/smsfirebase-cbc65.appspot.com/o/person3.png?alt=media&token=e84ceb38-a55d-4375-b2b6-2aa68601ccc8",
-                            "https://firebasestorage.googleapis.com/v0/b/smsfirebase-cbc65.appspot.com/o/person4.png?alt=media&token=5f22ce14-631d-4751-84b5-012d13c773c1"
+                            "https://firebasestorage.googleapis.com/v0/b/smsfirebase-cbc65.appspot.com/o/person4.png?alt=media&token=5f22ce14-631d-4751-84b5-012d13c773c1",
+                            "https://firebasestorage.googleapis.com/v0/b/smsfirebase-cbc65.appspot.com/o/person2.png?alt=media&token=7db9ec2b-4c22-4e8a-a184-39ab3c90ff2d"
                     };
 
                     Random rand = new Random();
