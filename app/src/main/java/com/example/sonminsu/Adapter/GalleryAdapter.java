@@ -62,6 +62,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
             super(itemView);
             imageView = itemView.findViewById(R.id.image);
 
+            // Here we set the background of the itemView to transparent
+            itemView.setBackgroundResource(android.R.color.transparent);
+
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (mListener != null && position != RecyclerView.NO_POSITION) {

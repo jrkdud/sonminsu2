@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -82,6 +83,7 @@ public class PostActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.selected_image);
         mRecyclerView = findViewById(R.id.recycler_gallery);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setBackgroundColor(Color.TRANSPARENT);
 
         closeButton = findViewById(R.id.close_button);
         closeButton.setOnClickListener(v -> {
