@@ -1,10 +1,16 @@
 package com.example.sonminsu;
 
+import android.Manifest;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.sonminsu.Fragment.HomeFragment;
@@ -13,6 +19,8 @@ import com.example.sonminsu.Fragment.ProfileFragment;
 import com.example.sonminsu.Fragment.SearchFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        checkPermission();
 
         homeFragment = new HomeFragment();
         searchFragment = new SearchFragment();
@@ -81,6 +91,26 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+    }
+
+    public void checkPermission() {
+        String[] permissions = null;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions = new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO};
+        } else {
+            permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        }
+
+        List<String> denied_permissions = new ArrayList<>();
+        for (String perm : permissions) {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED)
+                denied_permissions.add(perm);
+        }
+
+        if(denied_permissions.size() > 0) {
+            String [] deniedPerms = denied_permissions.toArray(new String[0]);
+            ActivityCompat.requestPermissions(this, deniedPerms, 1000);
+        }
     }
 
 
