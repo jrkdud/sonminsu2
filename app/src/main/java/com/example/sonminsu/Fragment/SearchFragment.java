@@ -69,6 +69,24 @@ public class SearchFragment extends Fragment {
         postAdapter = new PostAdapter(getContext(), mPosts); // Assuming you have a PostAdapter
         recyclerViewPosts.setAdapter(postAdapter);
 
+        Bundle args = getArguments();
+        if (args != null) {
+            String hashtag = args.getString("hashtag");
+            if (hashtag != null) {
+                search_bar.setText(hashtag);
+                recyclerViewUsers.setVisibility(View.GONE);
+                searchPosts(hashtag);
+            } else {
+                recyclerViewUsers.setVisibility(View.VISIBLE);
+                readUsers();
+            }
+        } else {
+            recyclerViewUsers.setVisibility(View.VISIBLE);
+            readUsers();
+        }
+
+
+
         readUsers();
 
         search_bar.addTextChangedListener(new TextWatcher() {
@@ -80,21 +98,25 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().isEmpty()) {
-                    // If the search query is empty, clear the lists and notify adapters
                     mUsers.clear();
                     mPosts.clear();
                     userAdapter.notifyDataSetChanged();
                     postAdapter.notifyDataSetChanged();
 
-                    // Show the full list of users
+                    recyclerViewUsers.setVisibility(View.VISIBLE);
+
                     readUsers();
                 } else {
-                    // If the search query is not empty, search for users and posts
                     searchUsers(charSequence.toString().toLowerCase());
                     searchPosts(charSequence.toString().toLowerCase());
+
+                    if (charSequence.toString().startsWith("#")) {
+                        recyclerViewUsers.setVisibility(View.GONE);
+                    } else {
+                        recyclerViewUsers.setVisibility(View.VISIBLE);
+                    }
                 }
             }
-
 
 
 
@@ -150,7 +172,7 @@ public class SearchFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
 
-                    // Check if the description contains the entered text
+
                     if (post.getDescription().toLowerCase().contains(s.toLowerCase())) {
                         mPosts.add(post);
                     }
@@ -202,7 +224,6 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    @Override
     public void onResume() {
         super.onResume();
         ((MainActivity) getActivity()).updateNavigationBarState(R.id.navigation_search);
