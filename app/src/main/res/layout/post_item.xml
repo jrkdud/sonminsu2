@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/username"
                 android:layout_gravity="center_vertical"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:fontFamily="@font/nanumsquare_aceb"
                 android:textColor="@color/black"/>
 
@@ -72,6 +72,7 @@
                 android:id="@+id/description"
                 android:textColor="@color/black"
                 android:autoLink="web"
+                android:textSize="15dp"
                 android:linksClickable="true"
                 android:textColorLink="@color/colorMain" />
 
