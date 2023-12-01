@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -106,13 +107,22 @@ public class RegisterActivity extends AppCompatActivity {
 
                     reference = FirebaseDatabase.getInstance().getReference().child("Users").child(userid);
 
+                    String[] imageUrls = {
+                            "https://firebasestorage.googleapis.com/v0/b/smsfirebase-cbc65.appspot.com/o/person3.png?alt=media&token=e84ceb38-a55d-4375-b2b6-2aa68601ccc8",
+                            "https://firebasestorage.googleapis.com/v0/b/smsfirebase-cbc65.appspot.com/o/person4.png?alt=media&token=5f22ce14-631d-4751-84b5-012d13c773c1"
+                    };
+
+                    Random rand = new Random();
+                    String randomImageUrl = imageUrls[rand.nextInt(imageUrls.length)];
+
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("id", userid);
                     hashMap.put("username", username.toLowerCase());
                     hashMap.put("fullname", fullname);
                     hashMap.put("bio", "");
-                    hashMap.put("email", email); // 이 부분을 추가했습니다.
-                    hashMap.put("imageurl", "https://firebasestorage.googleapis.com/v0/b/smsfirebase-cbc65.appspot.com/o/person.png?alt=media&token=9dcd124e-fe98-4cd5-9af3-17ee6dfcf603");
+                    hashMap.put("email", email);
+                    hashMap.put("imageurl", randomImageUrl);  // 랜덤으로 선택한 이미지 URL을 사용
+
 
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
