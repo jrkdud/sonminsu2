@@ -8,19 +8,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -29,7 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.sonminsu.Adapter.ImageAdapter;
+import com.example.sonminsu.Adapter.GalleryAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -40,16 +40,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -62,12 +56,14 @@ public class PostActivity extends AppCompatActivity {
     EditText description;
     ProgressDialog pd;
 
-    private ExecutorService executorService;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_PICK = 2;
+    private ImageView mImageView;
+    private RecyclerView mRecyclerView;
+    private GalleryAdapter mAdapter;
+    private ImageButton closeButton;
 
     private static final int YOUR_REQUEST_CODE = 123;
-
-    // 선택 이력을 저장하는 스택
-    private Stack<Integer> navigationStack = new Stack<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,35 +77,29 @@ public class PostActivity extends AppCompatActivity {
 
         storageReference = FirebaseStorage.getInstance().getReference("posts");
 
-        executorService = Executors.newSingleThreadExecutor();
+        List<String> imagePaths = getAllShownImagesPath(this);
+        mAdapter = new GalleryAdapter(this, imagePaths);
 
-        ImageButton backBtn = findViewById(R.id.back_btn);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 이전 선택을 SharedPreferences에서 가져옴
-                SharedPreferences sharedPref = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
-                int previousSelection = sharedPref.getInt("previous_selection", 0);
+        mImageView = findViewById(R.id.selected_image);
+        mRecyclerView = findViewById(R.id.recycler_gallery);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setBackgroundColor(Color.TRANSPARENT);
 
-                // MainActivity로 돌아가며 이전 선택을 전달
-                Intent intent = new Intent(PostActivity.this, MainActivity.class);
-                intent.putExtra("previous_selection", previousSelection);
-                startActivity(intent);
-                finish();
-            }
+        closeButton = findViewById(R.id.close_button);
+        closeButton.setOnClickListener(v -> {
+            mImageView.setImageDrawable(null);
+            imageUri = null;
+            mImageView.setVisibility(View.GONE);
+            closeButton.setVisibility(View.GONE);
         });
 
-        //환경설정
-        ImageButton settingsButton = findViewById(R.id.settings_btn);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PostActivity.this, SettingActivity.class);
-                startActivity(intent);
-            }
+        mAdapter.setOnItemClickListener(imagePath -> {
+            imageUri = Uri.parse(imagePath);
+            mImageView.setImageURI(imageUri);
+            mImageView.setVisibility(View.VISIBLE);
+            closeButton.setVisibility(View.VISIBLE);
         });
 
-        // 이미지뷰 클릭 시 카메라 열기
         image_added.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,7 +107,6 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        // 이미지뷰 클릭 시 갤러리 열기
         image_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,14 +121,38 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        // 권한 확인
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            // 권한이 없다면 권한 요청
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, YOUR_REQUEST_CODE);
         } else {
-            // 권한이 있다면 이미지를 불러옵니다.
             loadImage();
         }
+    }
+
+    private List<String> getAllShownImagesPath(Activity activity) {
+        Uri uri;
+        Cursor cursor;
+        int column_index_data;
+        int column_index_id;
+        List<String> listOfAllImages = new ArrayList<>();
+        String absolutePathOfImage;
+
+        uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+        String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME, MediaStore.Images.Media._ID};
+
+        cursor = activity.getContentResolver().query(uri, projection, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC");
+
+        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        column_index_id = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
+
+        while (cursor.moveToNext()) {
+            absolutePathOfImage = cursor.getString(column_index_data);
+            long id = cursor.getLong(column_index_id);
+            Uri contentUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+            listOfAllImages.add(contentUri.toString());
+        }
+
+        return listOfAllImages;
     }
 
     @Override
@@ -150,24 +163,19 @@ public class PostActivity extends AppCompatActivity {
                 loadImage();
             } else {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    // 사용자가 '다시 묻지 않음'을 선택하지 않고 거부한 경우, 권한을 다시 요청합니다.
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
                 } else {
-                    // '다시 묻지 않음'을 선택하고 거부한 경우, 토스트 메시지를 띄웁니다.
                     Toast.makeText(this, "권한이 거부되었습니다. 앱 설정에서 권한을 허용해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
     }
 
-
     private void loadImage() {
-        // Uri를 저장할 ArrayList를 생성합니다.
-        ArrayList<Uri> imageUris = new ArrayList<>();
+        ArrayList<String> imageUris = new ArrayList<>();
         Cursor cursor = null;
 
         try {
-            // MediaStore를 통해 모든 이미지를 가져옵니다.
             cursor = getContentResolver().query(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     new String[]{MediaStore.Images.Media._ID},
@@ -176,13 +184,10 @@ public class PostActivity extends AppCompatActivity {
                     MediaStore.Images.Media.DATE_ADDED + " DESC"
             );
 
-            // 이미지를 모두 선택합니다.
             while (cursor != null && cursor.moveToNext()) {
                 int id = cursor.getInt(0);
                 Uri contentUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-
-                // ArrayList에 Uri를 추가합니다.
-                imageUris.add(contentUri);
+                imageUris.add(contentUri.toString()); // Uri를 String으로 변환
             }
         } finally {
             if (cursor != null) {
@@ -190,18 +195,14 @@ public class PostActivity extends AppCompatActivity {
             }
         }
 
-        // RecyclerView에 어댑터를 설정합니다.
-        RecyclerView recyclerView = findViewById(R.id.recycler_gallery);
-        ImageAdapter adapter = new ImageAdapter(this, imageUris);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new GalleryAdapter(this, imageUris);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
-    // 카메라 열기를 위한 메서드
     private void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
     private String getFileExtension(Uri uri) {
@@ -210,26 +211,39 @@ public class PostActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    // 이미지 선택을 위한 메서드
     private void openImagePicker() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1); // 이 숫자는 요청 코드로 나중에 onActivityResult에서 사용
+        startActivityForResult(intent, REQUEST_IMAGE_PICK);
     }
 
-    // 이미지 선택 후 결과 처리
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-
-            ImageView selectedImage = findViewById(R.id.selected_image);
-            selectedImage.setImageURI(imageUri);
-            selectedImage.setVisibility(View.VISIBLE);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                // Save the Uri of the captured image
+                imageUri = getImageUri(getApplicationContext(), imageBitmap);
+                mImageView.setImageBitmap(imageBitmap);
+                mImageView.setVisibility(View.VISIBLE);
+                closeButton.setVisibility(View.VISIBLE);
+            } else if (requestCode == REQUEST_IMAGE_PICK) {
+                Uri selectedImage = data.getData();
+                imageUri = selectedImage;
+                mImageView.setImageURI(selectedImage);
+                mImageView.setVisibility(View.VISIBLE);
+                closeButton.setVisibility(View.VISIBLE);
+            }
         }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     private void uploadImage() {
