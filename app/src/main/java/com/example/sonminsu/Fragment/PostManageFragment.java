@@ -1,6 +1,7 @@
 package com.example.sonminsu.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -58,6 +59,8 @@ public class PostManageFragment extends Fragment {
         posts = view.findViewById(R.id.posts);
         username = view.findViewById(R.id.username);
         my_fotos = view.findViewById(R.id.my_fotos);
+
+
 
         ImageButton back = view.findViewById(R.id.back_btn);
         back.setOnClickListener(new View.OnClickListener() {
@@ -158,5 +161,13 @@ public class PostManageFragment extends Fragment {
 
             }
         });
+    }
+
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+
     }
 }

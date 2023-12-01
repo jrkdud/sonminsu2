@@ -81,6 +81,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         getCommentsCount(post.getPostid(), viewHolder.comments_count);
         isSaved(post.getPostid(), viewHolder.save);
 
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
+                editor.putString("postid", post.getPostid());
+                editor.apply();
+
+                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PostDetailFragment()).commit();
+            }
+        });
+
         viewHolder.image_profile.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
