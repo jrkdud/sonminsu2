@@ -20,10 +20,19 @@ import java.util.List;
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private List<String> mImagePaths;
     private Context mContext;
+    private OnItemClickListener mListener;
 
     public GalleryAdapter(Context context, List<String> imagePaths) {
         mContext = context;
         mImagePaths = imagePaths;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(String imagePath);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
     }
 
     @NonNull
@@ -49,9 +58,16 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.image);
+
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (mListener != null && position != RecyclerView.NO_POSITION) {
+                    mListener.onItemClick(mImagePaths.get(position));
+                }
+            });
         }
     }
 }

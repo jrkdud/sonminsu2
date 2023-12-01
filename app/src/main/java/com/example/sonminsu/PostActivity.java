@@ -12,16 +12,14 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -43,15 +41,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+
 
 public class PostActivity extends AppCompatActivity {
 
@@ -64,7 +59,13 @@ public class PostActivity extends AppCompatActivity {
     EditText description;
     ProgressDialog pd;
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_PICK = 2;
+    private ImageView mImageView;
+    private RecyclerView mRecyclerView;
+    private GalleryAdapter mAdapter;
     private ExecutorService executorService;
+    private ImageButton closeButton;
 
     private static final int YOUR_REQUEST_CODE = 123;
 
@@ -89,6 +90,25 @@ public class PostActivity extends AppCompatActivity {
         List<String> imagePaths = getAllShownImagesPath(this);
         GalleryAdapter adapter = new GalleryAdapter(this, imagePaths);
         recyclerView.setAdapter(adapter);
+
+        mImageView = findViewById(R.id.selected_image);
+        mRecyclerView = findViewById(R.id.recycler_gallery);
+        mAdapter = new GalleryAdapter(this, imagePaths);
+        mRecyclerView.setAdapter(mAdapter);
+
+        closeButton = findViewById(R.id.close_button);
+        closeButton.setOnClickListener(v -> {
+            mImageView.setImageDrawable(null);  // 이미지를 제거합니다.
+            imageUri = null;  // 선택한 이미지의 Uri를 제거합니다.
+            mImageView.setVisibility(View.GONE);  // ImageView를 숨깁니다.
+            closeButton.setVisibility(View.GONE);  // X 버튼을 숨깁니다.
+        });
+
+        mAdapter.setOnItemClickListener(imagePath -> {
+            mImageView.setImageURI(Uri.parse(imagePath));
+            mImageView.setVisibility(View.VISIBLE);
+            closeButton.setVisibility(View.VISIBLE);
+        });
 
         ImageButton backBtn = findViewById(R.id.back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +166,20 @@ public class PostActivity extends AppCompatActivity {
         } else {
             // 권한이 있다면 이미지를 불러옵니다.
             loadImage();
+        }
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    private void dispatchPickPictureIntent() {
+        Intent pickPictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if (pickPictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(pickPictureIntent, REQUEST_IMAGE_PICK);
         }
     }
 
@@ -243,23 +277,29 @@ public class PostActivity extends AppCompatActivity {
 
     // 이미지 선택을 위한 메서드
     private void openImagePicker() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1); // 이 숫자는 요청 코드로 나중에 onActivityResult에서 사용
+        startActivityForResult(intent, REQUEST_IMAGE_PICK);
     }
 
     // 이미지 선택 후 결과 처리
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-
-            ImageView selectedImage = findViewById(R.id.selected_image);
-            selectedImage.setImageURI(imageUri);
-            selectedImage.setVisibility(View.VISIBLE);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                mImageView.setImageBitmap(imageBitmap);
+                mImageView.setVisibility(View.VISIBLE);
+                closeButton.setVisibility(View.VISIBLE);
+            } else if (requestCode == REQUEST_IMAGE_PICK) {
+                Uri selectedImage = data.getData();
+                imageUri = selectedImage;  // 선택한 이미지의 Uri를 저장합니다.
+                mImageView.setImageURI(selectedImage);  // 선택한 이미지를 ImageView에 설정합니다.
+                mImageView.setVisibility(View.VISIBLE);  // ImageView를 보이도록 합니다.
+                closeButton.setVisibility(View.VISIBLE);  // X 버튼을 보이도록 합니다.
+            }
         }
     }
 
