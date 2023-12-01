@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -29,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sonminsu.Adapter.GalleryAdapter;
 import com.example.sonminsu.Adapter.ImageAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -82,6 +84,11 @@ public class PostActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference("posts");
 
         executorService = Executors.newSingleThreadExecutor();
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_gallery);
+        List<String> imagePaths = getAllShownImagesPath(this);
+        GalleryAdapter adapter = new GalleryAdapter(this, imagePaths);
+        recyclerView.setAdapter(adapter);
 
         ImageButton backBtn = findViewById(R.id.back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +147,30 @@ public class PostActivity extends AppCompatActivity {
             // 권한이 있다면 이미지를 불러옵니다.
             loadImage();
         }
+    }
+
+    //갤러리 최근 사진
+    private List<String> getAllShownImagesPath(Activity activity) {
+        Uri uri;
+        Cursor cursor;
+        int column_index_data;
+        List<String> listOfAllImages = new ArrayList<String>();
+        String absolutePathOfImage;
+
+        uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+        String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
+
+        cursor = activity.getContentResolver().query(uri, projection, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC");
+
+        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+
+        while (cursor.moveToNext()) {
+            absolutePathOfImage = cursor.getString(column_index_data);
+            listOfAllImages.add(absolutePathOfImage);
+        }
+
+        return listOfAllImages;
     }
 
     @Override
