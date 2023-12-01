@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:fontFamily="@font/nanumsquare_acb"
+                android:fontFamily="@font/nanumsquare_aceb"
                 android:textColor="@color/colorPoint"
                 android:text="게시물 관리"
                 android:textSize="18dp"
@@ -101,11 +101,10 @@
                             android:id="@+id/username"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanumsquare_acb"
+                            android:fontFamily="@font/nanumsquare_aceb"
                             android:maxLines="1"
                             android:textColor="@color/colorHidden"
-                            android:textSize="17dp"
-                            android:textStyle="bold" />
+                            android:textSize="17dp" />
 
                     </LinearLayout>
 
@@ -134,8 +133,7 @@
                                 android:textColor="@color/colorHidden"
                                 android:layout_gravity="center"
                                 android:textSize="18dp"
-                                android:fontFamily="@font/nanumsquare_acb"
-                                android:textStyle="bold"/>
+                                android:fontFamily="@font/nanumsquare_acb" />
 
                         </LinearLayout>
 

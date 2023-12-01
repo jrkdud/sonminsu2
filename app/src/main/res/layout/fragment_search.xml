@@ -40,7 +40,7 @@
                 android:gravity="center"
                 android:text="검색"
                 android:textColor="@color/colorPoint"
-                android:fontFamily="@font/nanumsquare_acb"
+                android:fontFamily="@font/nanumsquare_aceb"
                 android:textSize="18dp" />
 
             <ImageButton

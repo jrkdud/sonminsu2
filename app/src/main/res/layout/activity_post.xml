@@ -47,7 +47,7 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:textColor="@color/colorPoint"
-                    android:fontFamily="@font/nanumsquare_acb"
+                    android:fontFamily="@font/nanumsquare_aceb"
                     android:text="내 글쓰기"
                     android:textSize="17dp" />
 
