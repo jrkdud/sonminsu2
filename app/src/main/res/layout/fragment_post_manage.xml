@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/nanumsquare_acb"
+                android:textColor="@color/colorPoint"
                 android:text="게시물 관리"
                 android:textSize="18dp"
                 android:gravity="center"/>
@@ -71,9 +72,9 @@
                 android:orientation="horizontal"
                 android:id="@+id/top_bar"
                 android:background="@color/white"
-                android:paddingTop="16dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:paddingTop="15dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="80dp"
@@ -84,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
-                    android:paddingLeft="5dp"
+                    android:paddingLeft="10dp"
                     android:paddingRight="4dp"
                     android:orientation="vertical">
 
@@ -147,7 +148,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="-5dp"
                 android:layout_marginRight="-5dp"
                 android:id="@+id/last_bar"
@@ -166,6 +166,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
                 android:id="@+id/recycler_view"/>
         </LinearLayout>
     </ScrollView>

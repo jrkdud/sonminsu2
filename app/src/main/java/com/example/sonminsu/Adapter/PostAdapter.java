@@ -286,6 +286,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                     imageView.setTag("liked");
                 } else {
                     imageView.setImageResource(R.drawable.ic_like);
+                    imageView.setColorFilter(ContextCompat.getColor(mContext, R.color.colorHidden));
                     imageView.setTag("like");
                 }
             }
@@ -337,7 +338,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                 User user = snapshot.getValue(User.class);
                 Glide.with(mContext).load(user.getImageurl()).into(image_profile);
                 username.setText(user.getUsername());
-                publisher.setText(user.getUsername());
+                publisher.setText("@" + user.getUsername());
+
             }
 
             @Override
@@ -358,9 +360,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(postid).exists()) {
                     imageView.setImageResource(R.drawable.ic_save_black);
+                    imageView.setColorFilter(ContextCompat.getColor(mContext, R.color.colorHidden));
                     imageView.setTag("saved");
                 } else {
                     imageView.setImageResource(R.drawable.ic_save);
+                    imageView.setColorFilter(ContextCompat.getColor(mContext, R.color.colorHidden));
                     imageView.setTag("save");
                 }
             }

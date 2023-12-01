@@ -107,16 +107,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                Glide.with(mContext).load(user.getImageurl()).into(imageView);
-                username.setText(user.getUsername());
+                if(user != null) {
+                    Glide.with(mContext).load(user.getImageurl()).into(imageView);
+                    username.setText(user.getUsername());
+                } else {
+                    // Handle the case when User is null.
+                    // For example, you might want to display a default image and username.
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle the error
             }
         });
     }
+
 
     private void getPostImage(ImageView imageView, final String postid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts").child(postid);
