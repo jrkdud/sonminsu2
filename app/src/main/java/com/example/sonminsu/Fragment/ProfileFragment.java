@@ -1,5 +1,7 @@
 package com.example.sonminsu.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,6 +28,8 @@ import com.example.sonminsu.R;
 import com.example.sonminsu.RegisterActivity;
 import com.example.sonminsu.SettingActivity;
 import com.example.sonminsu.StartActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -119,6 +124,7 @@ public class ProfileFragment extends Fragment {
 
         });
 
+        //내 정보 수정
         profile_edit = view.findViewById(R.id.profile_edit);
         profile_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,8 +142,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        //로그아웃
         logout = view.findViewById(R.id.logout);
-
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,6 +152,58 @@ public class ProfileFragment extends Fragment {
 
                 // startActivity를 사용하여 새로운 Activity로 전환
                 startActivity(intent);
+            }
+        });
+
+        //회원탈퇴
+        TextView userRemove = view.findViewById(R.id.userremove);
+        userRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // AlertDialog 생성
+                new AlertDialog.Builder(getContext())
+                        .setMessage("탈퇴하시겠습니까?")
+                        .setPositiveButton("탈퇴", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                if (user != null) {
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                                    ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                // Firebase에서 사용자 데이터 삭제
+                                                user.delete()
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    // 데이터 삭제 성공
+                                                                    Intent intent = new Intent(getActivity(), LoginActivity.class)
+                                                                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    startActivity(intent);
+                                                                } else {
+                                                                    // 데이터 삭제 실패
+                                                                    Toast.makeText(getContext(), "회원 탈퇴에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            }
+                                                        });
+                                            } else {
+                                                // 데이터베이스에서 데이터 삭제 실패
+                                                Toast.makeText(getContext(), "회원 탈퇴에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         });
 
