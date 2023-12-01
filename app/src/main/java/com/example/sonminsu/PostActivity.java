@@ -14,6 +14,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sonminsu.Adapter.GalleryAdapter;
+import com.example.sonminsu.Fragment.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -126,6 +128,22 @@ public class PostActivity extends AppCompatActivity {
         } else {
             loadImage();
         }
+
+        ImageButton backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 이전 선택을 SharedPreferences에서 가져옴
+                SharedPreferences sharedPref = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+                int previousSelection = sharedPref.getInt("previous_selection", 0);
+
+                // MainActivity로 돌아가며 이전 선택을 전달
+                Intent intent = new Intent(PostActivity.this, MainActivity.class);
+                intent.putExtra("previous_selection", previousSelection);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private List<String> getAllShownImagesPath(Activity activity) {
