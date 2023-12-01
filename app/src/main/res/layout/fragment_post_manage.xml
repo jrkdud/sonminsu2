@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/nanumsquare_acb"
+                android:textColor="@color/colorPoint"
                 android:text="게시물 관리"
                 android:textSize="18dp"
                 android:gravity="center"/>

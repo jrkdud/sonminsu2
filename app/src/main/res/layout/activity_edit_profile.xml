@@ -31,8 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="마이페이지"
+            android:text="내 정보 수정"
             android:textSize="18dp"
+            android:textColor="@color/colorPoint"
             android:fontFamily="@font/nanumsquare_acb"
             android:gravity="center"/>
 

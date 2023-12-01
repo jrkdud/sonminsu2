@@ -4,6 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorMain">#FF7A01</color>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorHidden">#3B4249</color>
+    <color name="colorHidden">#40474E</color>
+    <color name="colorPoint">#3A3A3A</color>
     <color name="colorPrimaryDark">#009688</color>
+    <color name="colorLight">#626465</color>
 </resources>

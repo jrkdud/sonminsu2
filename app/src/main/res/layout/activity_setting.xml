@@ -26,6 +26,7 @@
             android:layout_centerInParent="true"
             android:text="환경설정"
             android:textSize="18dp"
+            android:textColor="@color/colorPoint"
             android:fontFamily="@font/nanumsquare_acb"
             android:gravity="center"/>
 
@@ -66,6 +67,7 @@
             android:layout_toEndOf="@+id/alarm_ic"
             android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
+            android:textColor="@color/colorHidden"
             android:text="알림"
             android:textSize="16dp"
             android:gravity="center_vertical" />
@@ -95,6 +97,7 @@
             android:layout_toEndOf="@+id/noimode_ic"
             android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
+            android:textColor="@color/colorHidden"
             android:text="방해금지모드"
             android:textSize="16dp"
             android:gravity="center_vertical" />
@@ -124,6 +127,7 @@
             android:layout_toEndOf="@+id/drakmode_ic"
             android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
+            android:textColor="@color/colorHidden"
             android:text="다크모드"
             android:textSize="16dp"
             android:gravity="center_vertical" />
@@ -143,7 +147,7 @@
             android:layout_height="24dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="26dp"
+            android:layout_marginStart="25dp"
             android:background="@drawable/help" />
 
         <TextView
@@ -151,8 +155,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/help_ic"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="14dp"
             android:layout_centerVertical="true"
+            android:textColor="@color/colorHidden"
             android:text="도움말"
             android:textSize="16dp"
             android:gravity="center_vertical" />
