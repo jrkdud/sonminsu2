@@ -16,7 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import com.example.sonminsu.Adapter.AdPagerAdapter;
 import com.example.sonminsu.Adapter.UserAdapter;
 import com.example.sonminsu.Adapter.PostAdapter; // Assuming you have a PostAdapter
 import com.example.sonminsu.MainActivity;
@@ -43,6 +45,7 @@ public class SearchFragment extends Fragment {
     private PostAdapter postAdapter;
     private List<User> mUsers;
     private List<Post> mPosts;
+    private ViewPager viewPager;
 
     EditText search_bar;
 
@@ -60,6 +63,10 @@ public class SearchFragment extends Fragment {
         recyclerViewPosts.setLayoutManager(new LinearLayoutManager(getContext()));
 
         search_bar = view.findViewById(R.id.search_bar);
+        viewPager = view.findViewById(R.id.viewPager); // 수정된 부분
+        AdPagerAdapter adPagerAdapter = new AdPagerAdapter(getContext(), "ca-app-pub-3940256099942544/6300978111"); // 수정된 부분
+        viewPager.setAdapter(adPagerAdapter);
+
 
         mUsers = new ArrayList<>();
         userAdapter = new UserAdapter(getContext(), mUsers);
@@ -75,6 +82,7 @@ public class SearchFragment extends Fragment {
             if (hashtag != null) {
                 search_bar.setText(hashtag);
                 recyclerViewUsers.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
                 searchPosts(hashtag);
             } else {
                 recyclerViewUsers.setVisibility(View.VISIBLE);
@@ -104,6 +112,7 @@ public class SearchFragment extends Fragment {
                     postAdapter.notifyDataSetChanged();
 
                     recyclerViewUsers.setVisibility(View.VISIBLE);
+                    viewPager.setVisibility(View.VISIBLE);
 
                     readUsers();
                 } else {
@@ -115,6 +124,7 @@ public class SearchFragment extends Fragment {
                     } else {
                         recyclerViewUsers.setVisibility(View.VISIBLE);
                     }
+                    viewPager.setVisibility(View.GONE);
                 }
             }
 
