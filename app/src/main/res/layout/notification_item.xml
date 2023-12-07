@@ -38,6 +38,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/post_image"
+        android:scaleType="centerCrop"
         android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>
