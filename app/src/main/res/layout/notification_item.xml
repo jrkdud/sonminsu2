@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/username"
             android:textSize="16dp"
+            android:text="이름"
             android:fontFamily="@font/nanumsquare_aceb"
             android:textColor="@color/colorPrimaryDark"/>
         <TextView
